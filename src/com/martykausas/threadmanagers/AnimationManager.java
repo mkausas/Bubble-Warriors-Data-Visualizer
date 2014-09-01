@@ -1,4 +1,6 @@
-package com.martykausas;
+package com.martykausas.threadmanagers;
+
+import com.martykausas.Panel;
 
 /**
  *
@@ -19,7 +21,7 @@ public class AnimationManager extends Thread {
 
                 panel.repaint();
 
-                Thread.sleep(10);
+                Thread.sleep(5);
             } catch(Exception ex) { ex.printStackTrace(); }
         }
     }

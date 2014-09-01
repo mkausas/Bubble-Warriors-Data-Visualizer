@@ -1,5 +1,7 @@
 package com.martykausas;
 
+import com.martykausas.threadmanagers.AnimationManager;
+import com.martykausas.threadmanagers.InteractionManager;
 import com.martykausas.interfaces.Actable;
 import com.martykausas.interfaces.Drawable;
 import com.martykausas.testingclasses.AverageJoe;
@@ -20,16 +22,20 @@ public class WarAIProgram {
         initVariables();
 
         AnimationManager animationThread = new AnimationManager(frame.panel);
-        UpdateManager updateThread = new UpdateManager();
+        InteractionManager interactionThread = new InteractionManager();
 
         animationThread.start();
-        updateThread.start();
+        interactionThread.start();
     }
 
     public void initVariables() {
-        AverageJoe character = new AverageJoe();
+        AverageJoe character = new AverageJoe(AverageJoe.BLUE, 100, 100);
+        AverageJoe character2 = new AverageJoe(AverageJoe.RED, 900, 600);
+
         actables.add(character);
+        actables.add(character2);
         drawables.add(character);
+        drawables.add(character2);
     }
 
 

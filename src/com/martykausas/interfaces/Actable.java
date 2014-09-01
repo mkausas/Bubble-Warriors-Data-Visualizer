@@ -6,5 +6,5 @@ package com.martykausas.interfaces;
  */
 public interface Actable {
 
-    public void act();
+    public void update();
 }

@@ -1,8 +1,9 @@
 package com.martykausas;
 
 import com.martykausas.interfaces.Drawable;
-import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -16,16 +17,17 @@ public class Panel extends JPanel {
 
     public Panel() {
         drawables = WarAIProgram.drawables;
+        setDoubleBuffered(true);
     }
 
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-//        g.setColor(Color.CYAN);
-//        g.drawRect(0, 0, 100, 100);
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         for (int i = 0; i < drawables.size(); i++) {
-            drawables.get(i).draw(g);
+            drawables.get(i).draw(g2d);
         }
     }
 }
