@@ -4,7 +4,7 @@ import com.martykausas.threadmanagers.AnimationManager;
 import com.martykausas.threadmanagers.InteractionManager;
 import com.martykausas.interfaces.Actable;
 import com.martykausas.interfaces.Drawable;
-import com.martykausas.testingclasses.AverageJoe;
+import com.martykausas.prototypingclasses.AverageJoe;
 import java.util.ArrayList;
 
 /**
@@ -29,8 +29,8 @@ public class WarAIProgram {
     }
 
     public void initVariables() {
-        AverageJoe character = new AverageJoe(AverageJoe.BLUE, 100, 100);
-        AverageJoe character2 = new AverageJoe(AverageJoe.RED, 900, 600);
+        AverageJoe character = new AverageJoe(AverageJoe.BLUE, 100, 300);
+        AverageJoe character2 = new AverageJoe(AverageJoe.RED, 900, 800);
 
         actables.add(character);
         actables.add(character2);

@@ -1,4 +1,4 @@
-package com.martykausas.testingclasses;
+package com.martykausas.prototypingclasses;
 
 import com.martykausas.interfaces.Actable;
 import com.martykausas.interfaces.Drawable;
@@ -12,12 +12,14 @@ import javax.vecmath.Vector2d;
  */
 public class AverageJoe implements Actable, Drawable {
 
-    public static final int RED = 0, BLUE = 1;
-
-    private int
-            type,
+    public static final int
+            RED = 0,
+            BLUE = 1,
             SIZE = 80,
             SMALL_SIZE = (int) SIZE / 2;
+
+    private int
+            type;
 
     private double
             outsideX = 0,
@@ -40,7 +42,7 @@ public class AverageJoe implements Actable, Drawable {
     public void update() {
         Vector2d velocity = getVelocityVector();
 
-        System.out.println("velocity = " + "(" + velocity.x + ", " + velocity.y + ")");
+//        System.out.println("velocity = " + "(" + velocity.x + ", " + velocity.y + ")");
         outsideX += velocity.x;
         outsideY += velocity.y;
         insideX = outsideX + SMALL_SIZE / 2;
@@ -52,17 +54,17 @@ public class AverageJoe implements Actable, Drawable {
         double dy = setpointY - (insideY + SMALL_SIZE / 2);
 
 
-        if (dx > movementSpeed)
-            dx = movementSpeed;
-        else if (dx < -movementSpeed)
-            dx = -movementSpeed;
+//        if (dx > movementSpeed)
+//            dx = movementSpeed;
+//        else if (dx < -movementSpeed)
+//            dx = -movementSpeed;
+//
+//        if (dy > movementSpeed)
+//            dy = movementSpeed;
+//        else if (dy < -movementSpeed)
+//            dy = -movementSpeed;
 
-        if (dy > movementSpeed)
-            dy = movementSpeed;
-        else if (dy < -movementSpeed)
-            dy = -movementSpeed;
-
-        return new Vector2d(dx * 1, dy * 1);
+        return new Vector2d(dx * .003, dy * .003);
 
         //<editor-fold defaultstate="collapsed" desc="More complicated vector math for moving to a setpoint, yet to be completed">
 //        System.out.println("dx = " + dx + " dy = " + dy);
@@ -94,6 +96,8 @@ public class AverageJoe implements Actable, Drawable {
         // setpoint test
         g.setColor(Color.green);
         g.drawRect((int) setpointX - SIZE / 2, (int) setpointY - SIZE / 2, SIZE, SIZE);
+
+        g.drawLine((int) getX(), (int)getY(), (int) setpointX, (int) setpointY);
     }
 
 

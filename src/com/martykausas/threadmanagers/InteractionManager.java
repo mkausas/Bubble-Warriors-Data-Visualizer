@@ -3,7 +3,7 @@ package com.martykausas.threadmanagers;
 import com.martykausas.Frame;
 import com.martykausas.WarAIProgram;
 import com.martykausas.interfaces.Actable;
-import com.martykausas.testingclasses.AverageJoe;
+import com.martykausas.prototypingclasses.AverageJoe;
 import java.util.ArrayList;
 import static javax.swing.UIManager.get;
 
@@ -50,14 +50,16 @@ public class InteractionManager extends Thread {
                         }
                     }
 
+                    System.out.println("Closest character distance: " + closestCharacterDistance);
 
-//                    if ()
-
-                    // set the new target
-                    temp.setTarget(
-                            ((AverageJoe) actables.get(closestCharacterIdentifier)).getX(),
-                            ((AverageJoe) actables.get(closestCharacterIdentifier)).getY());
-
+                    if (closestCharacterDistance > (double) AverageJoe.SIZE) {
+                        // set the new target
+                        temp.setTarget(
+                                ((AverageJoe) actables.get(closestCharacterIdentifier)).getX(),
+                                ((AverageJoe) actables.get(closestCharacterIdentifier)).getY());
+                    } else {
+                        temp.setTarget(temp.getX(), temp.getY());
+                    }
                 }
 
                 Thread.sleep(20);
