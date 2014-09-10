@@ -1,11 +1,9 @@
 package com.martykausas.threadmanagers;
 
-import com.martykausas.Frame;
 import com.martykausas.WarAIProgram;
 import com.martykausas.interfaces.Actable;
 import com.martykausas.prototypingclasses.AverageJoe;
 import java.util.ArrayList;
-import static javax.swing.UIManager.get;
 
 /**
  *
@@ -41,7 +39,7 @@ public class InteractionManager extends Thread {
                         if (temp.getType() != temp2.getType()) { // not on same team
                             double dist = Math.sqrt(
                                 Math.pow(temp.getX() - temp2.getX(), 2) +
-                                Math.pow(temp.getY() - temp.getY(), 2));
+                                Math.pow(temp.getY() - temp2.getY(), 2));
 
                             if (dist < closestCharacterDistance) {
                                 closestCharacterDistance = dist;
