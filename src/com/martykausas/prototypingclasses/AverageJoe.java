@@ -12,6 +12,9 @@ import javax.vecmath.Vector2d;
  */
 public class AverageJoe implements Actable, Drawable {
 
+    private static int currentID = 1;
+    private final int id = currentID;
+
     public static final int
             RED = 0,
             BLUE = 1,
@@ -26,25 +29,27 @@ public class AverageJoe implements Actable, Drawable {
             outsideY = 0,
             insideX,
             insideY,
-            movementSpeed = 2,
+            movementSpeed = 0.006,
             setpointX = 400,
             setpointY = 500;
 
+    private Vector2d velocityVector = new Vector2d();
 
     public AverageJoe(int type, double startX, double startY) {
-        this.type = type;
-        outsideX = startX;
-        outsideY = startY;
+        this.type   = type;
+        outsideX    = startX;
+        outsideY    = startY;
+        currentID++;
     }
 
 
     @Override
     public void update() {
-        Vector2d velocity = getVelocityVector();
+        velocityVector = getVelocityVector();
 
 //        System.out.println("velocity = " + "(" + velocity.x + ", " + velocity.y + ")");
-        outsideX += velocity.x;
-        outsideY += velocity.y;
+        outsideX += velocityVector.x;
+        outsideY += velocityVector.y;
         insideX = outsideX + SMALL_SIZE / 2;
         insideY = outsideY + SMALL_SIZE / 2;
     }
@@ -53,18 +58,7 @@ public class AverageJoe implements Actable, Drawable {
         double dx = setpointX - (insideX + SMALL_SIZE / 2);
         double dy = setpointY - (insideY + SMALL_SIZE / 2);
 
-
-//        if (dx > movementSpeed)
-//            dx = movementSpeed;
-//        else if (dx < -movementSpeed)
-//            dx = -movementSpeed;
-//
-//        if (dy > movementSpeed)
-//            dy = movementSpeed;
-//        else if (dy < -movementSpeed)
-//            dy = -movementSpeed;
-
-        return new Vector2d(dx * .003, dy * .003);
+        return new Vector2d(dx * movementSpeed, dy * movementSpeed);
 
         //<editor-fold defaultstate="collapsed" desc="More complicated vector math for moving to a setpoint, yet to be completed">
 //        System.out.println("dx = " + dx + " dy = " + dy);
@@ -80,6 +74,18 @@ public class AverageJoe implements Actable, Drawable {
 //        return movementSpeed * ((dx > dy) ? (dy / dx) : (dx / dy));
 
         //</editor-fold>
+        //<editor-fold defaultstate="collapsed" desc="alternative method to movement, constant pace">
+//        if (dx > movementSpeed)
+//            dx = movementSpeed;
+//        else if (dx < -movementSpeed)
+//            dx = -movementSpeed;
+//
+//        if (dy > movementSpeed)
+//            dy = movementSpeed;
+//        else if (dy < -movementSpeed)
+//            dy = -movementSpeed;
+        //</editor-fold>
+
     }
 
 
@@ -93,28 +99,81 @@ public class AverageJoe implements Actable, Drawable {
         g.setColor(Color.black);
         g.fillOval((int) insideX, (int) insideY, SMALL_SIZE, SMALL_SIZE);
 
-        // setpoint test
+        // setpoint line
         g.setColor(Color.green);
-        g.drawRect((int) setpointX - SIZE / 2, (int) setpointY - SIZE / 2, SIZE, SIZE);
+        g.drawLine((int) getX(), (int) getY(), (int) setpointX, (int) setpointY);
 
-        g.drawLine((int) getX(), (int)getY(), (int) setpointX, (int) setpointY);
+        g.setColor(Color.MAGENTA);
+        g.drawString("" + id, (int) getX(), (int) getY());
     }
 
 
+    /**
+     * Sets the target of point of the {@code AverageJoe}
+     * @param setpointX
+     * @param setpointY
+     */
     public void setTarget(double setpointX, double setpointY) {
         this.setpointX = setpointX;
         this.setpointY = setpointY;
     }
 
+    /**
+     * Returns the cartesian x-coordinate of the center of the {@code AverageJoe}
+     * @return
+     */
     public double getX() {
         return (insideX + SMALL_SIZE / 2);
     }
 
+    /**
+     * Returns the cartesian y-coordinate of the center of the {@code AverageJoe}
+     * @return
+     */
     public double getY() {
         return (insideY + SMALL_SIZE / 2);
     }
 
+    public double getSetpointX() {
+        return setpointX;
+    }
+
+    public double getSetpointY() {
+        return setpointY;
+    }
+
+    /**
+     * Returns the integer representing the type of {@see AverageJoe} this is
+     * @return
+     */
     public int getType() {
         return type;
+    }
+
+    /**
+     * Returns whether or not two {@code AverageJoe}s are intersecting
+     *
+     * @param character
+     * @return
+     */
+    public boolean intersects(AverageJoe character) {
+        return dist(this, character) < SIZE;
+    }
+
+    /**
+     * Returns the distance between two {@code AverageJoe}s
+     *
+     * @param character1
+     * @param character2
+     * @return
+     */
+    public double dist(AverageJoe character1, AverageJoe character2) {
+        return Math.sqrt(
+                Math.pow(character1.getX() - character2.getX(), 2) +
+                Math.pow(character1.getY() - character2.getY(), 2));
+    }
+
+    public int getID() {
+        return id;
     }
 }
