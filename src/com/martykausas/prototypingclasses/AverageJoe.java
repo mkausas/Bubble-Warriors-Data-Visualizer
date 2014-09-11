@@ -31,7 +31,8 @@ public class AverageJoe implements Actable, Drawable {
             insideY,
             movementSpeed = 0.006,
             setpointX = 400,
-            setpointY = 500;
+            setpointY = 500,
+            distanceToClosestOpponent = 10000;
 
     private Vector2d velocityVector = new Vector2d();
 
@@ -39,6 +40,9 @@ public class AverageJoe implements Actable, Drawable {
         this.type   = type;
         outsideX    = startX;
         outsideY    = startY;
+        insideX     = outsideX + SMALL_SIZE / 2;
+        insideY     = outsideX + SMALL_SIZE / 2;
+
         currentID++;
     }
 
@@ -175,5 +179,14 @@ public class AverageJoe implements Actable, Drawable {
 
     public int getID() {
         return id;
+    }
+
+
+    public double getDistanceToClosestOpponent() {
+        return distanceToClosestOpponent;
+    }
+
+    public void setDistanceToClosestOpponent(double dist) {
+        distanceToClosestOpponent = dist;
     }
 }

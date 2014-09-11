@@ -62,53 +62,15 @@ public class InteractionManager extends Thread {
                             // scrolling through characters of the same type
                             else {
 
-//                                System.out.println("type = " + temp.getType() + " and "
-//                                        + temp2.getType() + " dx " + dx + ", dy " + dy);
-
-
+                                // found intersection between two same-type temps
                                 if (temp.intersects(temp2)) {
-                                    temp2.setTarget(temp2X, temp2Y);
-                                    /*
-//                                    System.out.println("character of same type intersecting");
-                                    // more "intersection" in the x
-                                    if (Math.abs(dx) > Math.abs(dy)) {
-                                        // temp is lower down then temp2
-                                        if (tempY > temp2Y) {
-                                            System.out.println(temp.getID() + " is lower down then " + temp2.getID());
-                                            // move temp2 up dy * multiplier
-                                            temp2.setTarget(
-                                                    temp2.getSetpointX(),
-                                                    temp2.getSetpointY() + (dy * 2));
-                                        }
-
-                                        // temp is higher up then temp2
-                                        else {
-                                            // move temp2 down dy * multiplier
-                                            temp2.setTarget(
-                                                    temp2.getSetpointX(),
-                                                    temp2.getSetpointY() - (dy * 2));
-                                        }
+                                    // if temp is farther, it's his job to move around temp2
+                                    if (temp.getDistanceToClosestOpponent() >
+                                        temp2.getDistanceToClosestOpponent()) {
+                                        temp.setTarget(tempX - 4 * dx, tempY - 4 * dy);
+                                    } else {
+                                        temp2.setTarget(temp2X - 4 * dx, temp2Y - 4 * dy);
                                     }
-
-                                    // more "intersection" in the y
-                                    else {
-                                        System.out.println("more intersection in the y");
-                                        // temp is right of temp2
-                                        if (tempX > temp2X) {
-                                            // move temp2 up dy * multiplier
-                                            temp2.setTarget(
-                                                    temp2.getSetpointX() + (dx * 2),
-                                                    temp2.getSetpointY());
-                                        }
-
-                                        // temp is left of temp2
-                                        else {
-                                            // move temp2 right dy * multiplier
-                                            temp2.setTarget(
-                                                    temp2.getSetpointX() - (dx * 2),
-                                                    temp2.getSetpointY());
-                                        }
-                                    } */
                                 }
                             }
                         }
@@ -116,13 +78,17 @@ public class InteractionManager extends Thread {
 
 //                    System.out.println("Closest character distance: " + closestCharacterDistance);
 
-                    // detecting
+                    // each character has an updated copy of their distance towards their closest opponent
+                    temp.setDistanceToClosestOpponent(closestCharacterDistance);
+
+                    // detecting collision between opponents
                     if (closestCharacterDistance >= (double) AverageJoe.SIZE) {
-                        // set the new target
+                        // no collision, continue moving towards temp2
                         temp.setTarget(
                                 ((AverageJoe) actables.get(closestCharacterIdentifier)).getX(),
                                 ((AverageJoe) actables.get(closestCharacterIdentifier)).getY());
                     } else {
+                        // stop movement, temp is intersecting
                         temp.setTarget(tempX, tempY);
                     }
                 } // end of first for()
