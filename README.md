@@ -13,4 +13,4 @@ Cool add-on ideas:
 - have armies based on web gathered information (visualize data through the simulation)
 
 Screenshot of the work in its test stages:
-![alt tag](https://raw.github.com/mkausas/pics/pics1.png)
+![alt tag](https://raw.githubusercontent.com/mkausas/Bubble-Ai/master/pics/pic1.png)
