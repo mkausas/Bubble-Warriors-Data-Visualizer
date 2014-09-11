@@ -67,32 +67,26 @@ public class InteractionManager extends Thread {
 
 
                                 if (temp.intersects(temp2)) {
+                                    temp2.setTarget(temp2X, temp2Y);
+                                    /*
 //                                    System.out.println("character of same type intersecting");
                                     // more "intersection" in the x
                                     if (Math.abs(dx) > Math.abs(dy)) {
-                                        System.out.println("temp is lower down then temp2");
                                         // temp is lower down then temp2
                                         if (tempY > temp2Y) {
-                                            // move temp down dy * multiplier
-                                            temp.setTarget(
-                                                    temp.getSetpointX(),
-                                                    temp.getSetpointY() + (dy * 2));
+                                            System.out.println(temp.getID() + " is lower down then " + temp2.getID());
                                             // move temp2 up dy * multiplier
                                             temp2.setTarget(
-                                                    temp.getSetpointX(),
-                                                    temp.getSetpointY() - (dy * 2));
+                                                    temp2.getSetpointX(),
+                                                    temp2.getSetpointY() + (dy * 2));
                                         }
 
                                         // temp is higher up then temp2
                                         else {
-                                            // move temp up dy * multiplier
-                                            temp.setTarget(
-                                                    temp.getSetpointX(),
-                                                    temp.getSetpointY() - (dy * 2));
                                             // move temp2 down dy * multiplier
                                             temp2.setTarget(
-                                                    temp.getSetpointX(),
-                                                    temp.getSetpointY() + (dy * 2));
+                                                    temp2.getSetpointX(),
+                                                    temp2.getSetpointY() - (dy * 2));
                                         }
                                     }
 
@@ -101,28 +95,20 @@ public class InteractionManager extends Thread {
                                         System.out.println("more intersection in the y");
                                         // temp is right of temp2
                                         if (tempX > temp2X) {
-                                            // move temp right dy * multiplier
-                                            temp.setTarget(
-                                                    temp.getSetpointX() + (dx * 2),
-                                                    temp.getSetpointY());
                                             // move temp2 up dy * multiplier
                                             temp2.setTarget(
-                                                    temp.getSetpointX() - (dx * 2),
-                                                    temp.getSetpointY());
+                                                    temp2.getSetpointX() + (dx * 2),
+                                                    temp2.getSetpointY());
                                         }
 
                                         // temp is left of temp2
                                         else {
-                                            // move temp left dy * multiplier
-                                            temp.setTarget(
-                                                    temp.getSetpointX() - (dx * 2),
-                                                    temp.getSetpointY());
                                             // move temp2 right dy * multiplier
                                             temp2.setTarget(
-                                                    temp.getSetpointX() + (dx * 2),
-                                                    temp.getSetpointY());
+                                                    temp2.getSetpointX() - (dx * 2),
+                                                    temp2.getSetpointY());
                                         }
-                                    }
+                                    } */
                                 }
                             }
                         }
