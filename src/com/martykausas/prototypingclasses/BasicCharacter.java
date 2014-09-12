@@ -10,7 +10,7 @@ import javax.vecmath.Vector2d;
  *
  * @author Marty
  */
-public class AverageJoe implements Actable, Drawable {
+public class BasicCharacter implements Actable, Drawable {
 
     private static int currentID = 1;
     private final int id = currentID;
@@ -18,7 +18,7 @@ public class AverageJoe implements Actable, Drawable {
     public static final int
             RED = 0,
             BLUE = 1,
-            SIZE = 80,
+            SIZE = 40,
             SMALL_SIZE = (int) SIZE / 2;
 
     private int
@@ -36,7 +36,7 @@ public class AverageJoe implements Actable, Drawable {
 
     private Vector2d velocityVector = new Vector2d();
 
-    public AverageJoe(int type, double startX, double startY) {
+    public BasicCharacter(int type, double startX, double startY) {
         this.type   = type;
         outsideX    = startX;
         outsideY    = startY;
@@ -113,7 +113,7 @@ public class AverageJoe implements Actable, Drawable {
 
 
     /**
-     * Sets the target of point of the {@code AverageJoe}
+     * Sets the target of point of the {@code BasicCharacter}
      * @param setpointX
      * @param setpointY
      */
@@ -123,7 +123,7 @@ public class AverageJoe implements Actable, Drawable {
     }
 
     /**
-     * Returns the cartesian x-coordinate of the center of the {@code AverageJoe}
+     * Returns the cartesian x-coordinate of the center of the {@code BasicCharacter}
      * @return
      */
     public double getX() {
@@ -131,7 +131,7 @@ public class AverageJoe implements Actable, Drawable {
     }
 
     /**
-     * Returns the cartesian y-coordinate of the center of the {@code AverageJoe}
+     * Returns the cartesian y-coordinate of the center of the {@code BasicCharacter}
      * @return
      */
     public double getY() {
@@ -155,23 +155,23 @@ public class AverageJoe implements Actable, Drawable {
     }
 
     /**
-     * Returns whether or not two {@code AverageJoe}s are intersecting
+     * Returns whether or not two {@code BasicCharacter}s are intersecting
      *
      * @param character
      * @return
      */
-    public boolean intersects(AverageJoe character) {
+    public boolean intersects(BasicCharacter character) {
         return dist(this, character) < SIZE;
     }
 
     /**
-     * Returns the distance between two {@code AverageJoe}s
+     * Returns the distance between two {@code BasicCharacter}s
      *
      * @param character1
      * @param character2
      * @return
      */
-    public double dist(AverageJoe character1, AverageJoe character2) {
+    public double dist(BasicCharacter character1, BasicCharacter character2) {
         return Math.sqrt(
                 Math.pow(character1.getX() - character2.getX(), 2) +
                 Math.pow(character1.getY() - character2.getY(), 2));

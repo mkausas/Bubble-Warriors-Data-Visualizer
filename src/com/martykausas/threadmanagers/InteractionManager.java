@@ -2,7 +2,7 @@ package com.martykausas.threadmanagers;
 
 import com.martykausas.WarAIProgram;
 import com.martykausas.interfaces.Actable;
-import com.martykausas.prototypingclasses.AverageJoe;
+import com.martykausas.prototypingclasses.BasicCharacter;
 import java.util.ArrayList;
 
 /**
@@ -22,7 +22,7 @@ public class InteractionManager extends Thread {
         while (true) {
             try {
                 for (int i = 0; i < actables.size(); i++) {
-                    AverageJoe temp = (AverageJoe) actables.get(i);
+                    BasicCharacter temp = (BasicCharacter) actables.get(i);
                     double tempX = temp.getX();
                     double tempY = temp.getY();
 
@@ -36,7 +36,7 @@ public class InteractionManager extends Thread {
 
                     // scroll through the other characters, interact with them
                     for (int j = 0; j < actables.size(); j++) {
-                        AverageJoe temp2 = (AverageJoe) actables.get(j);
+                        BasicCharacter temp2 = (BasicCharacter) actables.get(j);
 
                         if (temp.getID() != temp2.getID()) {
 
@@ -82,11 +82,11 @@ public class InteractionManager extends Thread {
                     temp.setDistanceToClosestOpponent(closestCharacterDistance);
 
                     // detecting collision between opponents
-                    if (closestCharacterDistance >= (double) AverageJoe.SIZE) {
+                    if (closestCharacterDistance >= (double) BasicCharacter.SIZE) {
                         // no collision, continue moving towards temp2
                         temp.setTarget(
-                                ((AverageJoe) actables.get(closestCharacterIdentifier)).getX(),
-                                ((AverageJoe) actables.get(closestCharacterIdentifier)).getY());
+                                ((BasicCharacter) actables.get(closestCharacterIdentifier)).getX(),
+                                ((BasicCharacter) actables.get(closestCharacterIdentifier)).getY());
                     } else {
                         // stop movement, temp is intersecting
                         temp.setTarget(tempX, tempY);

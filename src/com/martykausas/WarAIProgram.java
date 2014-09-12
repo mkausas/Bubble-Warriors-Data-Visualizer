@@ -4,7 +4,7 @@ import com.martykausas.threadmanagers.AnimationManager;
 import com.martykausas.threadmanagers.InteractionManager;
 import com.martykausas.interfaces.Actable;
 import com.martykausas.interfaces.Drawable;
-import com.martykausas.prototypingclasses.AverageJoe;
+import com.martykausas.prototypingclasses.BasicCharacter;
 import java.util.ArrayList;
 
 /**
@@ -29,26 +29,31 @@ public class WarAIProgram {
     }
 
     public void initVariables() {
-        AverageJoe character = new AverageJoe(AverageJoe.BLUE, 100, 400);
-        AverageJoe character2 = new AverageJoe(AverageJoe.RED, 300, 300);
-        AverageJoe character3 = new AverageJoe(AverageJoe.RED, 500, 100);
-        AverageJoe character4 = new AverageJoe(AverageJoe.RED, 700, 500);
-        AverageJoe character5 = new AverageJoe(AverageJoe.RED, 900, 400);
+//        BasicCharacter character = new BasicCharacter(BasicCharacter.BLUE, 100, 400);
+//        BasicCharacter character2 = new BasicCharacter(BasicCharacter.RED, 300, 300);
+//        BasicCharacter character3 = new BasicCharacter(BasicCharacter.RED, 500, 100);
+//        BasicCharacter character4 = new BasicCharacter(BasicCharacter.RED, 700, 500);
+//        BasicCharacter character5 = new BasicCharacter(BasicCharacter.RED, 900, 400);
 
 
 
-        for (int i = 0; i < 50; i++) {
-            AverageJoe c = new AverageJoe(AverageJoe.RED, Math.random() * 700 + 200, Math.random() * 700);
+        for (int i = 0; i < 80; i++) {
+            BasicCharacter c = new BasicCharacter(BasicCharacter.RED, Math.random() * 700 + 700, Math.random() * 700);
+            actables.add(c);
+            drawables.add(c);
+        }
+        for (int i = 0; i < 80; i++) {
+            BasicCharacter c = new BasicCharacter(BasicCharacter.BLUE, Math.random() * 700, Math.random() * 700);
             actables.add(c);
             drawables.add(c);
         }
 
-        actables.add(character);
+//        actables.add(character);
 //        actables.add(character2);
 //        actables.add(character3);
 //        actables.add(character4);
 //        actables.add(character5);
-        drawables.add(character);
+//        drawables.add(character);
 //        drawables.add(character2);
 //        drawables.add(character3);
 //        drawables.add(character4);
