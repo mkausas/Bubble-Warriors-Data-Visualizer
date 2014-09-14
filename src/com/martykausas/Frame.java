@@ -32,10 +32,10 @@ public class Frame extends JFrame {
         });
 
         initVariables();
-
         add(panel);
-
         setVisible(true);
+        this.createBufferStrategy(ALLBITS);
+
     }
 
     private void initVariables() {

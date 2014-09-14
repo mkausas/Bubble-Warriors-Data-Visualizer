@@ -1,7 +1,7 @@
 package com.martykausas.threadmanagers;
 
 import com.martykausas.WarAIProgram;
-import com.martykausas.interfaces.Actable;
+import com.martykausas.interfaces.Updatable;
 import com.martykausas.prototypingclasses.BasicCharacter;
 import java.util.ArrayList;
 
@@ -11,20 +11,22 @@ import java.util.ArrayList;
  */
 public class InteractionManager extends Thread {
 
-    private ArrayList<Actable> actables;
+    private ArrayList<Updatable> updatables;
 
     public InteractionManager() {
-        actables = WarAIProgram.actables;
+        updatables = WarAIProgram.updatables;
     }
 
     @Override
     public void run() {
         while (true) {
             try {
-                for (int i = 0; i < actables.size(); i++) {
-                    BasicCharacter temp = (BasicCharacter) actables.get(i);
+                for (int i = 0; i < updatables.size(); i++) {
+                    BasicCharacter temp = (BasicCharacter) updatables.get(i);
                     double tempX = temp.getX();
                     double tempY = temp.getY();
+                    double dx = 0;
+                    double dy = 0;
 
                     // call the update function
                     temp.update();
@@ -35,19 +37,19 @@ public class InteractionManager extends Thread {
 
 
                     // scroll through the other characters, interact with them
-                    for (int j = 0; j < actables.size(); j++) {
-                        BasicCharacter temp2 = (BasicCharacter) actables.get(j);
+                    for (int j = 0; j < updatables.size(); j++) {
+                        BasicCharacter temp2 = (BasicCharacter) updatables.get(j);
 
                         if (temp.getID() != temp2.getID()) {
 
                             double temp2X = temp2.getX();
                             double temp2Y = temp2.getY();
 
-                            double dx = tempX - temp2X;
-                            double dy = tempY - temp2Y;
+                            dx = tempX - temp2X;
+                            dy = tempY - temp2Y;
 
                             // scrolling through characters not of the same type
-                            if (temp.getType() != temp2.getType()) {
+                            if (temp.getTeam() != temp2.getTeam()) {
                                 double dist = Math.sqrt(
                                     Math.pow(dx, 2) +
                                     Math.pow(dy, 2));
@@ -68,7 +70,7 @@ public class InteractionManager extends Thread {
                                     if (temp.getDistanceToClosestOpponent() >
                                         temp2.getDistanceToClosestOpponent()) {
                                         temp.setTarget(tempX - 4 * dx, tempY - 4 * dy);
-                                    } else {
+                                    } else { // 4 is just a variable that worked for back movement
                                         temp2.setTarget(temp2X - 4 * dx, temp2Y - 4 * dy);
                                     }
                                 }
@@ -85,11 +87,14 @@ public class InteractionManager extends Thread {
                     if (closestCharacterDistance >= (double) BasicCharacter.SIZE) {
                         // no collision, continue moving towards temp2
                         temp.setTarget(
-                                ((BasicCharacter) actables.get(closestCharacterIdentifier)).getX(),
-                                ((BasicCharacter) actables.get(closestCharacterIdentifier)).getY());
+                                ((BasicCharacter) updatables.get(closestCharacterIdentifier)).getX(),
+                                ((BasicCharacter) updatables.get(closestCharacterIdentifier)).getY());
                     } else {
                         // stop movement, temp is intersecting
                         temp.setTarget(tempX, tempY);
+//                        temp.setTarget(
+//                                ((BasicCharacter) updatables.get(closestCharacterIdentifier)).getX() - 4 * dx,
+//                                ((BasicCharacter) updatables.get(closestCharacterIdentifier)).getY() - 4 * dx);
                     }
                 } // end of first for()
 

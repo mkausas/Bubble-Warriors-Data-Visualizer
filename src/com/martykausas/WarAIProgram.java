@@ -1,10 +1,12 @@
 package com.martykausas;
 
+import com.martykausas.prototypingclasses.Fighter;
 import com.martykausas.threadmanagers.AnimationManager;
 import com.martykausas.threadmanagers.InteractionManager;
-import com.martykausas.interfaces.Actable;
+import com.martykausas.interfaces.Updatable;
 import com.martykausas.interfaces.Drawable;
 import com.martykausas.prototypingclasses.BasicCharacter;
+import com.martykausas.prototypingclasses.Medic;
 import java.util.ArrayList;
 
 /**
@@ -13,7 +15,7 @@ import java.util.ArrayList;
  */
 public class WarAIProgram {
 
-    public static ArrayList actables = new ArrayList<Actable>();
+    public static ArrayList updatables = new ArrayList<Updatable>();
     public static ArrayList drawables = new ArrayList<Drawable>();
 
     public WarAIProgram() {
@@ -24,8 +26,8 @@ public class WarAIProgram {
         AnimationManager animationThread = new AnimationManager(frame.panel);
         InteractionManager interactionThread = new InteractionManager();
 
-        animationThread.start();
         interactionThread.start();
+        animationThread.start();
     }
 
     public void initVariables() {
@@ -37,22 +39,23 @@ public class WarAIProgram {
 
 
 
-        for (int i = 0; i < 80; i++) {
-            BasicCharacter c = new BasicCharacter(BasicCharacter.RED, Math.random() * 700 + 700, Math.random() * 700);
-            actables.add(c);
+        for (int i = 0; i < 10; i++) {
+            Fighter c = new Fighter(BasicCharacter.RED, Math.random() * 700 + 700, Math.random() * 700);
+            updatables.add(c);
             drawables.add(c);
         }
-        for (int i = 0; i < 80; i++) {
-            BasicCharacter c = new BasicCharacter(BasicCharacter.BLUE, Math.random() * 700, Math.random() * 700);
-            actables.add(c);
+        for (int i = 0; i < 10; i++) {
+            Medic c = new Medic(BasicCharacter.BLUE, Math.random() * 700, Math.random() * 700);
+            updatables.add(c);
             drawables.add(c);
         }
 
-//        actables.add(character);
-//        actables.add(character2);
-//        actables.add(character3);
-//        actables.add(character4);
-//        actables.add(character5);
+
+//        updatables.add(character);
+//        updatables.add(character2);
+//        updatables.add(character3);
+//        updatables.add(character4);
+//        updatables.add(character5);
 //        drawables.add(character);
 //        drawables.add(character2);
 //        drawables.add(character3);

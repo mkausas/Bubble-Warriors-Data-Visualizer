@@ -1,16 +1,20 @@
 package com.martykausas.prototypingclasses;
 
-import com.martykausas.interfaces.Actable;
+import com.martykausas.interfaces.Updatable;
 import com.martykausas.interfaces.Drawable;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
 import javax.vecmath.Vector2d;
 
 /**
  *
  * @author Marty
  */
-public class BasicCharacter implements Actable, Drawable {
+public class BasicCharacter implements Updatable, Drawable {
 
     private static int currentID = 1;
     private final int id = currentID;
@@ -18,26 +22,34 @@ public class BasicCharacter implements Actable, Drawable {
     public static final int
             RED = 0,
             BLUE = 1,
-            SIZE = 40,
-            SMALL_SIZE = (int) SIZE / 2;
+            SIZE = 80,
+            SMALL_SIZE = (int) (SIZE * 0.6);
 
     private int
-            type;
+            team,
+            health = 10;
 
     private double
             outsideX = 0,
             outsideY = 0,
-            insideX,
-            insideY,
-            movementSpeed = 0.006,
+            insideX = 0,
+            insideY = 0,
             setpointX = 400,
             setpointY = 500,
-            distanceToClosestOpponent = 10000;
+
+            movementSpeed = 0.006,
+            distanceToClosestOpponent = 10000,
+            distanceToInteract = 5;
 
     private Vector2d velocityVector = new Vector2d();
+    private BufferedImage bImg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
+    private Image icon = bImg.getScaledInstance(1, 1, Image.SCALE_FAST);
 
-    public BasicCharacter(int type, double startX, double startY) {
-        this.type   = type;
+    private int iconX, iconY;
+
+
+    public BasicCharacter(int team, double startX, double startY) {
+        this.team   = team;
         outsideX    = startX;
         outsideY    = startY;
         insideX     = outsideX + SMALL_SIZE / 2;
@@ -46,6 +58,16 @@ public class BasicCharacter implements Actable, Drawable {
         currentID++;
     }
 
+    public void setIcon(String filePath, double widthToHeightRatio) {
+        // icon setup
+        try {
+            bImg = ImageIO.read(new File(filePath));
+            double iconWidth = BasicCharacter.SMALL_SIZE * .4;
+            icon = bImg.getScaledInstance(
+                    (int) iconWidth,
+                    (int) (iconWidth * widthToHeightRatio), Image.SCALE_SMOOTH);
+        } catch (Exception ex) { ex.printStackTrace(); }
+    }
 
     @Override
     public void update() {
@@ -54,9 +76,20 @@ public class BasicCharacter implements Actable, Drawable {
 //        System.out.println("velocity = " + "(" + velocity.x + ", " + velocity.y + ")");
         outsideX += velocityVector.x;
         outsideY += velocityVector.y;
-        insideX = outsideX + SMALL_SIZE / 2;
-        insideY = outsideY + SMALL_SIZE / 2;
+        insideX = (outsideX + SIZE / 2) - (SMALL_SIZE / 2);
+        insideY = (outsideY + SIZE / 2) - (SMALL_SIZE / 2);
+
+        iconX = (int) (getX() - icon.getWidth(null) / 2);
+        iconY = (int) (getY() - icon.getHeight(null) / 2);
+
+
+        childUpdate();
     }
+
+    /**
+     * Override this method in the parent class to call additional updates
+     */
+    public void childUpdate() { /* fill in in child class */ }
 
     private Vector2d getVelocityVector() {
         double dx = setpointX - (insideX + SMALL_SIZE / 2);
@@ -96,20 +129,31 @@ public class BasicCharacter implements Actable, Drawable {
     @Override
     public void draw(Graphics g) {
         // outside circle
-        g.setColor(type == RED ? Color.RED : Color.BLUE);
+        g.setColor(team == RED ? Color.RED : Color.BLUE);
         g.fillOval((int) outsideX, (int) outsideY, SIZE, SIZE);
 
         // inside circle
-        g.setColor(Color.black);
+        g.setColor(readyToInteract() ? Color.MAGENTA : Color.black);
         g.fillOval((int) insideX, (int) insideY, SMALL_SIZE, SMALL_SIZE);
 
         // setpoint line
         g.setColor(Color.green);
         g.drawLine((int) getX(), (int) getY(), (int) setpointX, (int) setpointY);
 
-        g.setColor(Color.MAGENTA);
-        g.drawString("" + id, (int) getX(), (int) getY());
+        if (icon.getWidth(null) > 1)
+            g.drawImage(icon, iconX, iconY, null);
+
+//        g.setColor(Color.MAGENTA);
+//        g.drawString("" + id, (int) getX(), (int) getY());
+
+        childDraw(g);
     }
+
+    /**
+     * Override this method in any children of {@code BasicCharacter} to draw
+     * @param g
+     */
+    public void childDraw(Graphics g) {  /* fill in in child class */ }
 
 
     /**
@@ -147,16 +191,15 @@ public class BasicCharacter implements Actable, Drawable {
     }
 
     /**
-     * Returns the integer representing the type of {@see AverageJoe} this is
+     * Returns the integer representing the team of {@see AverageJoe} this is
      * @return
      */
-    public int getType() {
-        return type;
+    public int getTeam() {
+        return team;
     }
 
     /**
      * Returns whether or not two {@code BasicCharacter}s are intersecting
-     *
      * @param character
      * @return
      */
@@ -166,7 +209,6 @@ public class BasicCharacter implements Actable, Drawable {
 
     /**
      * Returns the distance between two {@code BasicCharacter}s
-     *
      * @param character1
      * @param character2
      * @return
@@ -177,16 +219,44 @@ public class BasicCharacter implements Actable, Drawable {
                 Math.pow(character1.getY() - character2.getY(), 2));
     }
 
+    /**
+     * Returns a character specific ID that can be used
+     * to find an instance of this class
+     * @return
+     */
     public int getID() {
         return id;
     }
 
-
+    /**
+     * Returns the distance to the closest opponent
+     * @return
+     */
     public double getDistanceToClosestOpponent() {
         return distanceToClosestOpponent;
     }
 
+    /**
+     * Provide this character the distance from it and its target
+     * @param dist
+     */
     public void setDistanceToClosestOpponent(double dist) {
         distanceToClosestOpponent = dist;
+    }
+
+    /**
+     * Sets how close the character needs to be to interact
+     * @param dist
+     */
+    public void setDistanceToInteract(double dist) {
+        distanceToInteract = dist;
+    }
+
+    /**
+     * Returns true if a character is close enough to interact
+     * @return
+     */
+    public boolean readyToInteract() {
+        return distanceToClosestOpponent <= distanceToInteract;
     }
 }
