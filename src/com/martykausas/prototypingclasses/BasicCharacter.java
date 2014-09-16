@@ -11,6 +11,10 @@ import javax.imageio.ImageIO;
 import javax.vecmath.Vector2d;
 
 /**
+ * BasicCharacter acts as a parent for all characters.
+ * This class provides basic functionality for and drawing methods of normal
+ * characters; however, it exludes any actual interaction with characters
+ * such as: fighting, healing, etc.
  *
  * @author Marty
  */
@@ -58,14 +62,19 @@ public class BasicCharacter implements Updatable, Drawable {
         currentID++;
     }
 
-    public void setIcon(String filePath, double widthToHeightRatio) {
+    /**
+     * Set the custom image for the child of {@code BasicCharacter}
+     * @param filePath
+     */
+    public void setIcon(String filePath) {
         // icon setup
         try {
             bImg = ImageIO.read(new File(filePath));
             double iconWidth = BasicCharacter.SMALL_SIZE * .4;
             icon = bImg.getScaledInstance(
                     (int) iconWidth,
-                    (int) (iconWidth * widthToHeightRatio), Image.SCALE_SMOOTH);
+                    (int) (iconWidth * (bImg.getHeight() / bImg.getWidth())), Image.SCALE_SMOOTH);
+
         } catch (Exception ex) { ex.printStackTrace(); }
     }
 
@@ -140,6 +149,7 @@ public class BasicCharacter implements Updatable, Drawable {
         g.setColor(Color.green);
         g.drawLine((int) getX(), (int) getY(), (int) setpointX, (int) setpointY);
 
+        // if the img exists, draw it
         if (icon.getWidth(null) > 1)
             g.drawImage(icon, iconX, iconY, null);
 
@@ -182,10 +192,18 @@ public class BasicCharacter implements Updatable, Drawable {
         return (insideY + SMALL_SIZE / 2);
     }
 
+    /**
+     * Returns the x target of the {@code BasicCharacter}
+     * @return
+     */
     public double getSetpointX() {
         return setpointX;
     }
 
+    /**
+     * Returns the y target of the {@code BasicCharacter}
+     * @return
+     */
     public double getSetpointY() {
         return setpointY;
     }

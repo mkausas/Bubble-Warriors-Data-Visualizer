@@ -14,7 +14,7 @@ public class Fighter extends BasicCharacter {
 
     public Fighter(int type, double startX, double startY) {
         super(type, startX, startY);
-        setIcon("imgs/sword.png", 2.29);
+        setIcon("imgs/sword.png");
         setDistanceToInteract(100);
     }
 

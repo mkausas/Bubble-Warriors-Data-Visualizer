@@ -11,4 +11,6 @@ public interface Updatable {
      * Update is called continuously in a thread in the {@see InteractionManager}
      */
     public void update();
+
+
 }
