@@ -1,16 +1,14 @@
 package com.martykausas.prototypingclasses;
 
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import javax.imageio.ImageIO;
 
 /**
  *
  * @author Marty
  */
 public class Fighter extends BasicCharacter {
+
+    private int damageCoefficient = 5;
 
     public Fighter(int type, double startX, double startY) {
         super(type, startX, startY);
@@ -23,7 +21,7 @@ public class Fighter extends BasicCharacter {
     public void childUpdate() {
         if (readyToInteract()) {
             BasicCharacter opponent = getOpponent();
-            opponent.setHealth(opponent.getHealth() - 1);
+            opponent.deductHealth(damageCoefficient);
         }
     }
 

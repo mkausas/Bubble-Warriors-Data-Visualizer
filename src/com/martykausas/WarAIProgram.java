@@ -39,13 +39,13 @@ public class WarAIProgram {
 
 
 
-        for (int i = 0; i < 1; i++) {
-            Fighter c = new Fighter(BasicCharacter.RED, Math.random() * 700 + 700, Math.random() * 700);
+        for (int i = 0; i < 20; i++) {
+            Fighter c = new Fighter(BasicCharacter.RED, Math.random() * 700 + 900, Math.random() * 700);
             updatables.add(c);
             drawables.add(c);
         }
-        for (int i = 0; i < 1; i++) {
-            Medic c = new Medic(BasicCharacter.BLUE, Math.random() * 700, Math.random() * 700);
+        for (int i = 0; i < 20; i++) {
+            Fighter c = new Fighter(BasicCharacter.BLUE, Math.random() * 300, Math.random() * 700);
             updatables.add(c);
             drawables.add(c);
         }

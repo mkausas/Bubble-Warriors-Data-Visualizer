@@ -3,6 +3,7 @@ package com.martykausas.prototypingclasses;
 import com.martykausas.interfaces.Updatable;
 import com.martykausas.interfaces.Drawable;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -26,7 +27,7 @@ public class BasicCharacter implements Updatable, Drawable {
     public static final int
             RED = 0,
             BLUE = 1,
-            SIZE = 80,
+            SIZE = 40,
             SMALL_SIZE = (int) (SIZE * 0.6);
 
     private int
@@ -137,6 +138,9 @@ public class BasicCharacter implements Updatable, Drawable {
 
     @Override
     public void draw(Graphics g) {
+        if (health <= 0)
+            health = 0;
+
         // outside circle
         g.setColor(team == RED ? Color.RED : Color.BLUE);
         switch (team) {
@@ -152,7 +156,7 @@ public class BasicCharacter implements Updatable, Drawable {
         g.fillOval((int) outsideX, (int) outsideY, SIZE, SIZE);
 
         // inside circle
-        g.setColor(readyToInteract() ? Color.MAGENTA : Color.black);
+        g.setColor(readyToInteract() ? new Color(255, 0, 255, health) : new Color(0, 0, 0, health));
         g.fillOval((int) insideX, (int) insideY, SMALL_SIZE, SMALL_SIZE);
 
         // setpoint line
@@ -163,7 +167,8 @@ public class BasicCharacter implements Updatable, Drawable {
         if (icon.getWidth(null) > 1)
             g.drawImage(icon, iconX, iconY, null);
 
-//        g.setColor(Color.MAGENTA);
+//        g.setColor(Color.WHITE);
+//        g.setFont(new Font("Helvetica", Font.BOLD, 20));
 //        g.drawString("" + id, (int) getX(), (int) getY());
 
         childDraw(g);
@@ -294,6 +299,14 @@ public class BasicCharacter implements Updatable, Drawable {
      */
     public void setHealth(int health) {
         this.health = health;
+    }
+
+    /**
+     * Deducts the specified amount of health from the {@code BasicCharacter}
+     * @param amount
+     */
+    public void deductHealth(int amount) {
+        health -= amount;
     }
 
     /**

@@ -39,7 +39,7 @@ public class InteractionManager extends Thread {
 
                     // dummy value, closest character will be closer...
                     double closestCharacterDistance = 10000;
-                    int closestCharacterIdentifier = 0;
+                    int closestCharacterIdentifier = -1;
 
 
                     // scroll through the other characters, interact with them
@@ -47,7 +47,6 @@ public class InteractionManager extends Thread {
                         temp2 = (BasicCharacter) updatables.get(j);
 
                         if (temp.getID() != temp2.getID()) {
-
                             double temp2X = temp2.getX();
                             double temp2Y = temp2.getY();
 
@@ -64,7 +63,6 @@ public class InteractionManager extends Thread {
                                     closestCharacterDistance = dist;
                                     closestCharacterIdentifier = j;
                                 }
-
                             }
 
                             // scrolling through characters of the same type
@@ -79,30 +77,39 @@ public class InteractionManager extends Thread {
                                     } else { // 4 is just a variable that worked for back movement
                                         temp2.setTarget(temp2X - 4 * dx, temp2Y - 4 * dy);
                                     }
+//                                    System.out.println(temp.getID() + " has distance " + temp.getDistanceToClosestOpponent() + " to closest opponent");
                                 }
                             }
                         }
-                        // each character has an updated copy of their distance towards their closest opponent
-                        temp.setDistanceToClosestOpponent(closestCharacterDistance);
-                        temp.setOpponent(temp2);
-
                     } // end of second for()
 
-                    // detecting collision between opponents
-                    if (closestCharacterDistance >= (double) BasicCharacter.SIZE) {
-                        // no collision, continue moving towards temp2
-                        temp.setTarget(
-                                ((BasicCharacter) updatables.get(closestCharacterIdentifier)).getX(),
-                                ((BasicCharacter) updatables.get(closestCharacterIdentifier)).getY());
-                    } else {
-                        // stop movement, temp is intersecting
+                    // if there are still enemies on the other side
+                    if (closestCharacterIdentifier != -1) {
+                        BasicCharacter opponent = (BasicCharacter) updatables.get(closestCharacterIdentifier);
+                        System.out.println("Closest character id = " + closestCharacterIdentifier);
+
+                        // each character has an updated copy of their distance towards their closest opponent
+                        temp.setDistanceToClosestOpponent(closestCharacterDistance);
+                        temp.setOpponent(opponent);
+
+
+                        // detecting collision between opponents
+                        if (closestCharacterDistance >= (double) BasicCharacter.SIZE) {
+                            // no collision, continue moving towards temp2
+                            temp.setTarget(
+                                    opponent.getX(),
+                                    opponent.getY());
+                        } else {
+                            // stop movement, temp is intersecting
+                            temp.setTarget(tempX, tempY);
+                        }
+                    }
+                    // no more enemies left!
+                    else {
                         temp.setTarget(tempX, tempY);
-//                        temp.setTarget(
-//                                ((BasicCharacter) updatables.get(closestCharacterIdentifier)).getX() - 4 * dx,
-//                                ((BasicCharacter) updatables.get(closestCharacterIdentifier)).getY() - 4 * dx);
+                        
                     }
                 } // end of first for()
-
                 Thread.sleep(20);
             } catch (Exception ex) { ex.printStackTrace(); }
         }
