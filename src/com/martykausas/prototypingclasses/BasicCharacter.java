@@ -42,7 +42,7 @@ public class BasicCharacter implements Updatable, Drawable {
             setpointX = 400,
             setpointY = 500,
 
-            movementSpeed = 0.006,
+            movementSpeed = 0.0024,
             distanceToClosestOpponent = 10000,
             distanceToInteract = 5;
 
@@ -160,8 +160,8 @@ public class BasicCharacter implements Updatable, Drawable {
         g.fillOval((int) insideX, (int) insideY, SMALL_SIZE, SMALL_SIZE);
 
         // setpoint line
-        g.setColor(Color.green);
-        g.drawLine((int) getX(), (int) getY(), (int) setpointX, (int) setpointY);
+//        g.setColor(Color.green);
+//        g.drawLine((int) getX(), (int) getY(), (int) setpointX, (int) setpointY);
 
         // if the img exists, draw it
         if (icon.getWidth(null) > 1)

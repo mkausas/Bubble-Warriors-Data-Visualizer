@@ -26,8 +26,9 @@ public class WarAIProgram {
         AnimationManager animationThread = new AnimationManager(frame.panel);
         InteractionManager interactionThread = new InteractionManager();
 
-        interactionThread.start();
         animationThread.start();
+        interactionThread.start();
+
     }
 
     public void initVariables() {
@@ -39,12 +40,12 @@ public class WarAIProgram {
 
 
 
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 50; i++) {
             Fighter c = new Fighter(BasicCharacter.RED, Math.random() * 700 + 900, Math.random() * 700);
             updatables.add(c);
             drawables.add(c);
         }
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < 50; i++) {
             Fighter c = new Fighter(BasicCharacter.BLUE, Math.random() * 300, Math.random() * 700);
             updatables.add(c);
             drawables.add(c);

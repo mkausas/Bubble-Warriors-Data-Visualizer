@@ -8,7 +8,7 @@ import java.awt.Graphics;
  */
 public class Fighter extends BasicCharacter {
 
-    private int damageCoefficient = 5;
+    private int damageCoefficient = 2;
 
     public Fighter(int type, double startX, double startY) {
         super(type, startX, startY);
