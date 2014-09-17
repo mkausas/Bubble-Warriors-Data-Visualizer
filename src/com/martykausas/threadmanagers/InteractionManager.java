@@ -14,7 +14,7 @@ public class InteractionManager extends Thread {
     private ArrayList<Updatable> updatables;
 
     public InteractionManager() {
-        updatables = WarAIProgram.updatables;
+        updatables = WarAIProgram.getUpdatables();
     }
 
     @Override
@@ -23,6 +23,12 @@ public class InteractionManager extends Thread {
             try {
                 for (int i = 0; i < updatables.size(); i++) {
                     BasicCharacter temp = (BasicCharacter) updatables.get(i);
+                    if (temp.getHealth() <= 0) {
+                        WarAIProgram.removeCharacter(temp);
+                        break;
+                    }
+
+                    BasicCharacter temp2;
                     double tempX = temp.getX();
                     double tempY = temp.getY();
                     double dx = 0;
@@ -38,7 +44,7 @@ public class InteractionManager extends Thread {
 
                     // scroll through the other characters, interact with them
                     for (int j = 0; j < updatables.size(); j++) {
-                        BasicCharacter temp2 = (BasicCharacter) updatables.get(j);
+                        temp2 = (BasicCharacter) updatables.get(j);
 
                         if (temp.getID() != temp2.getID()) {
 
@@ -76,12 +82,11 @@ public class InteractionManager extends Thread {
                                 }
                             }
                         }
+                        // each character has an updated copy of their distance towards their closest opponent
+                        temp.setDistanceToClosestOpponent(closestCharacterDistance);
+                        temp.setOpponent(temp2);
+
                     } // end of second for()
-
-//                    System.out.println("Closest character distance: " + closestCharacterDistance);
-
-                    // each character has an updated copy of their distance towards their closest opponent
-                    temp.setDistanceToClosestOpponent(closestCharacterDistance);
 
                     // detecting collision between opponents
                     if (closestCharacterDistance >= (double) BasicCharacter.SIZE) {

@@ -16,16 +16,19 @@ public class Fighter extends BasicCharacter {
         super(type, startX, startY);
         setIcon("imgs/sword.png");
         setDistanceToInteract(100);
+        setHealth(255);
     }
 
     @Override
     public void childUpdate() {
-        System.out.println("Child is updating");
+        if (readyToInteract()) {
+            BasicCharacter opponent = getOpponent();
+            opponent.setHealth(opponent.getHealth() - 1);
+        }
     }
 
     @Override
     public void childDraw(Graphics g) {
-        System.out.println("Child is drawing!");
     }
 
 

@@ -12,6 +12,7 @@ public class BasicCharacterChildTemplate extends BasicCharacter {
         super(team, startX, startY);
         setIcon("pics/image.png");
         setDistanceToInteract(100);
+        setHealth(100);
     }
 
     @Override

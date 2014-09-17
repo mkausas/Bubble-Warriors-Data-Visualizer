@@ -31,7 +31,7 @@ public class BasicCharacter implements Updatable, Drawable {
 
     private int
             team,
-            health = 10;
+            health = 255;
 
     private double
             outsideX = 0,
@@ -45,6 +45,7 @@ public class BasicCharacter implements Updatable, Drawable {
             distanceToClosestOpponent = 10000,
             distanceToInteract = 5;
 
+    private BasicCharacter opponent;
     private Vector2d velocityVector = new Vector2d();
     private BufferedImage bImg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
     private Image icon = bImg.getScaledInstance(1, 1, Image.SCALE_FAST);
@@ -90,7 +91,6 @@ public class BasicCharacter implements Updatable, Drawable {
 
         iconX = (int) (getX() - icon.getWidth(null) / 2);
         iconY = (int) (getY() - icon.getHeight(null) / 2);
-
 
         childUpdate();
     }
@@ -139,6 +139,16 @@ public class BasicCharacter implements Updatable, Drawable {
     public void draw(Graphics g) {
         // outside circle
         g.setColor(team == RED ? Color.RED : Color.BLUE);
+        switch (team) {
+            case RED:
+                g.setColor(new Color(255, 0, 0, health));
+                break;
+            case BLUE:
+                g.setColor(new Color(0, 0, 255, health));
+                break;
+            default:
+                g.setColor(Color.ORANGE);
+        }
         g.fillOval((int) outsideX, (int) outsideY, SIZE, SIZE);
 
         // inside circle
@@ -277,4 +287,29 @@ public class BasicCharacter implements Updatable, Drawable {
     public boolean readyToInteract() {
         return distanceToClosestOpponent <= distanceToInteract;
     }
+
+    /**
+     * Set the health of the character
+     * @param health
+     */
+    public void setHealth(int health) {
+        this.health = health;
+    }
+
+    /**
+     * Returns the current health of the character
+     * @return
+     */
+    public int getHealth() {
+        return health;
+    }
+
+    public void setOpponent(BasicCharacter opponent) {
+        this.opponent = opponent;
+    }
+
+    public BasicCharacter getOpponent() {
+        return opponent;
+    }
+
 }

@@ -18,7 +18,7 @@ public class Panel extends JPanel {
     private ArrayList<Drawable> drawables;
 
     public Panel() {
-        drawables = WarAIProgram.drawables;
+        drawables = WarAIProgram.getDrawables();
 //        setDoubleBuffered(true);
     }
 
