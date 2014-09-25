@@ -1,4 +1,4 @@
-package com.martykausas.prototypingclasses;
+package com.martykausas.characters;
 
 import com.martykausas.interfaces.Updatable;
 import com.martykausas.interfaces.Drawable;
@@ -32,7 +32,8 @@ public class BasicCharacter implements Updatable, Drawable {
 
     private int
             team,
-            health = 255;
+            health = 255,
+            transparency = health;
 
     private double
             outsideX = 0,
@@ -138,17 +139,16 @@ public class BasicCharacter implements Updatable, Drawable {
 
     @Override
     public void draw(Graphics g) {
-        if (health <= 0)
-            health = 0;
+        transparency = health <= 0 ? 0 : health;
 
         // outside circle
         g.setColor(team == RED ? Color.RED : Color.BLUE);
         switch (team) {
             case RED:
-                g.setColor(new Color(255, 0, 0, health));
+                g.setColor(new Color(255, 0, 0, transparency));
                 break;
             case BLUE:
-                g.setColor(new Color(0, 0, 255, health));
+                g.setColor(new Color(0, 0, 255, transparency));
                 break;
             default:
                 g.setColor(Color.ORANGE);
@@ -156,7 +156,7 @@ public class BasicCharacter implements Updatable, Drawable {
         g.fillOval((int) outsideX, (int) outsideY, SIZE, SIZE);
 
         // inside circle
-        g.setColor(readyToInteract() ? new Color(255, 0, 255, health) : new Color(0, 0, 0, health));
+        g.setColor(readyToInteract() ? new Color(255, 0, 255, transparency) : new Color(0, 0, 0, transparency));
         g.fillOval((int) insideX, (int) insideY, SMALL_SIZE, SMALL_SIZE);
 
         // setpoint line
@@ -310,6 +310,14 @@ public class BasicCharacter implements Updatable, Drawable {
     }
 
     /**
+     * Increases the current health of a {@code BasicCharacter}
+     * @param amount
+     */
+    public void increaseHealth(int amount) {
+        health += amount;
+    }
+
+    /**
      * Returns the current health of the character
      * @return
      */
@@ -317,9 +325,14 @@ public class BasicCharacter implements Updatable, Drawable {
         return health;
     }
 
+    /**
+     * Sets the current opponent of this {@code BasicCharacter}
+     * @param opponent
+     */
     public void setOpponent(BasicCharacter opponent) {
         this.opponent = opponent;
     }
+
 
     public BasicCharacter getOpponent() {
         return opponent;

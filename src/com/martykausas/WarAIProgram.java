@@ -1,12 +1,12 @@
 package com.martykausas;
 
-import com.martykausas.prototypingclasses.Fighter;
+import com.martykausas.characters.Fighter;
 import com.martykausas.threadmanagers.AnimationManager;
 import com.martykausas.threadmanagers.InteractionManager;
 import com.martykausas.interfaces.Updatable;
 import com.martykausas.interfaces.Drawable;
-import com.martykausas.prototypingclasses.BasicCharacter;
-import com.martykausas.prototypingclasses.Medic;
+import com.martykausas.characters.BasicCharacter;
+import com.martykausas.characters.Medic;
 import java.util.ArrayList;
 
 /**
@@ -21,7 +21,10 @@ public class WarAIProgram {
     public WarAIProgram() {
         Frame frame = new Frame();
 
-        initVariables();
+
+
+        // start the simulator
+        initArmies();
 
         AnimationManager animationThread = new AnimationManager(frame.panel);
         InteractionManager interactionThread = new InteractionManager();
@@ -31,37 +34,26 @@ public class WarAIProgram {
 
     }
 
-    public void initVariables() {
-//        BasicCharacter character = new BasicCharacter(BasicCharacter.BLUE, 100, 400);
-//        BasicCharacter character2 = new BasicCharacter(BasicCharacter.RED, 300, 300);
-//        BasicCharacter character3 = new BasicCharacter(BasicCharacter.RED, 500, 100);
-//        BasicCharacter character4 = new BasicCharacter(BasicCharacter.RED, 700, 500);
-//        BasicCharacter character5 = new BasicCharacter(BasicCharacter.RED, 900, 400);
+    public void initArmies() {
 
-
-
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 2; i++) {
             Fighter c = new Fighter(BasicCharacter.RED, Math.random() * 700 + 900, Math.random() * 700);
             updatables.add(c);
             drawables.add(c);
         }
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 2; i++) {
             Fighter c = new Fighter(BasicCharacter.BLUE, Math.random() * 300, Math.random() * 700);
             updatables.add(c);
             drawables.add(c);
         }
 
+        Medic m1 = new Medic(BasicCharacter.RED, Math.random() * 700 + 900, Math.random() * 700);
+        Medic m2 = new Medic(BasicCharacter.BLUE, Math.random() * 300, Math.random() * 700);
+        updatables.add(m1);
+        updatables.add(m2);
+        drawables.add(m1);
+        drawables.add(m2);
 
-//        updatables.add(character);
-//        updatables.add(character2);
-//        updatables.add(character3);
-//        updatables.add(character4);
-//        updatables.add(character5);
-//        drawables.add(character);
-//        drawables.add(character2);
-//        drawables.add(character3);
-//        drawables.add(character4);
-//        drawables.add(character5);
     }
 
 

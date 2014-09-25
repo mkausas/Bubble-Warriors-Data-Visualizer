@@ -2,7 +2,7 @@ package com.martykausas.threadmanagers;
 
 import com.martykausas.WarAIProgram;
 import com.martykausas.interfaces.Updatable;
-import com.martykausas.prototypingclasses.BasicCharacter;
+import com.martykausas.characters.BasicCharacter;
 import java.util.ArrayList;
 
 /**
@@ -107,7 +107,7 @@ public class InteractionManager extends Thread {
                     // no more enemies left!
                     else {
                         temp.setTarget(tempX, tempY);
-                        
+
                     }
                 } // end of first for()
                 Thread.sleep(20);

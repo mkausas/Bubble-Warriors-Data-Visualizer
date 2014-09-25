@@ -1,4 +1,6 @@
-package com.martykausas.prototypingclasses;
+package com.martykausas.characters;
+
+import com.martykausas.characters.BasicCharacter;
 
 /**
  *
