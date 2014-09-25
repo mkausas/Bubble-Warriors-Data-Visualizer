@@ -36,23 +36,41 @@ public class WarAIProgram {
 
     public void initArmies() {
 
-        for (int i = 0; i < 2; i++) {
-            Fighter c = new Fighter(BasicCharacter.RED, Math.random() * 700 + 900, Math.random() * 700);
+        for (int i = 0; i < 10; i++) {
+            BasicCharacter c;
+                if (i % 5 == 0) {
+                    c = new Medic(BasicCharacter.RED, Math.random() * 700 + 900, Math.random() * 700);
+                } else {
+                    c = new Fighter(BasicCharacter.RED, Math.random() * 700 + 900, Math.random() * 700);
+                }
             updatables.add(c);
             drawables.add(c);
         }
-        for (int i = 0; i < 2; i++) {
-            Fighter c = new Fighter(BasicCharacter.BLUE, Math.random() * 300, Math.random() * 700);
+        for (int i = 0; i < 10; i++) {
+            BasicCharacter c;
+            if (i % 5 == 0) {
+                c = new Medic(BasicCharacter.BLUE, Math.random(), Math.random() * 700);
+            } else {
+                c = new Fighter(BasicCharacter.BLUE, Math.random() * 300, Math.random() * 700);
+            }
+
             updatables.add(c);
             drawables.add(c);
         }
 
-        Medic m1 = new Medic(BasicCharacter.RED, Math.random() * 700 + 900, Math.random() * 700);
-        Medic m2 = new Medic(BasicCharacter.BLUE, Math.random() * 300, Math.random() * 700);
+        Medic m1 = new Medic(BasicCharacter.BLUE, 700, 300);
+//        Medic m2 = new Medic(BasicCharacter.BLUE, Math.random() * 300, Math.random() * 700);
         updatables.add(m1);
-        updatables.add(m2);
+//        updatables.add(m2);
         drawables.add(m1);
-        drawables.add(m2);
+//        drawables.add(m2);
+
+//        Fighter f1 = new Fighter(BasicCharacter.RED, Math.random() * 700, Math.random() * 700);
+//        Fighter f2 = new Fighter(BasicCharacter.BLUE, Math.random() * 300, Math.random() * 700);
+//        updatables.add(f1);
+//        updatables.add(f2);
+//        drawables.add(f1);
+//        drawables.add(f2);
 
     }
 

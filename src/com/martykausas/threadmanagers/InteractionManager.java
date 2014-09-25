@@ -6,6 +6,7 @@ import com.martykausas.characters.BasicCharacter;
 import java.util.ArrayList;
 
 /**
+ * Thread that manages interaction between characters
  *
  * @author Marty
  */
@@ -29,11 +30,12 @@ public class InteractionManager extends Thread {
                     }
 
                     BasicCharacter temp2;
-                    double tempX = temp.getX();
-                    double tempY = temp.getY();
+                    double tempX = temp.getCenterX();
+                    double tempY = temp.getCenterY();
                     double dx = 0;
                     double dy = 0;
 
+                    // TODO: consider making a seperate Update() thread
                     // call the update function
                     temp.update();
 
@@ -47,14 +49,16 @@ public class InteractionManager extends Thread {
                         temp2 = (BasicCharacter) updatables.get(j);
 
                         if (temp.getID() != temp2.getID()) {
-                            double temp2X = temp2.getX();
-                            double temp2Y = temp2.getY();
+                            double temp2X = temp2.getCenterX();
+                            double temp2Y = temp2.getCenterY();
 
                             dx = tempX - temp2X;
                             dy = tempY - temp2Y;
 
                             // scrolling through characters not of the same type
-                            if (temp.getTeam() != temp2.getTeam()) {
+                            if (temp.getTeam() != temp2.getTeam() &&
+                                temp.getType() != BasicCharacter.MEDIC) {
+
                                 double dist = Math.sqrt(
                                     Math.pow(dx, 2) +
                                     Math.pow(dy, 2));
@@ -66,7 +70,7 @@ public class InteractionManager extends Thread {
                             }
 
                             // scrolling through characters of the same type
-                            else {
+                            else if (temp.getTeam() == temp2.getTeam()) {
 
                                 // found intersection between two same-type temps
                                 if (temp.intersects(temp2)) {
@@ -78,33 +82,46 @@ public class InteractionManager extends Thread {
                                         temp2.setTarget(temp2X - 4 * dx, temp2Y - 4 * dy);
                                     }
 //                                    System.out.println(temp.getID() + " has distance " + temp.getDistanceToClosestOpponent() + " to closest opponent");
-                                }
-                            }
-                        }
+                                } // end of same type interaction
+
+                                // medic code
+                                if (temp.getType() == BasicCharacter.MEDIC &&
+                                    temp2.getType() != BasicCharacter.MEDIC) {
+
+                                    double dist = Math.sqrt(
+                                        Math.pow(dx, 2) +
+                                        Math.pow(dy, 2));
+
+                                    if (dist < closestCharacterDistance) {
+                                        closestCharacterDistance = dist;
+                                        closestCharacterIdentifier = j;
+                                    }
+                                } // end medic code
+                            } // end characters of the same type
+                        } // end of characters that aren't the same character...
                     } // end of second for()
 
-                    // if there are still enemies on the other side
+                    // if there are still characters to interact with
                     if (closestCharacterIdentifier != -1) {
-                        BasicCharacter opponent = (BasicCharacter) updatables.get(closestCharacterIdentifier);
-                        System.out.println("Closest character id = " + closestCharacterIdentifier);
+                        BasicCharacter interactionCharacter = (BasicCharacter) updatables.get(closestCharacterIdentifier);
 
-                        // each character has an updated copy of their distance towards their closest opponent
+                        // each character has an updated copy of their distance towards their closest interaction character
                         temp.setDistanceToClosestOpponent(closestCharacterDistance);
-                        temp.setOpponent(opponent);
+                        temp.setInteractionCharacter(interactionCharacter);
 
 
-                        // detecting collision between opponents
+                        // detecting collision between characters
                         if (closestCharacterDistance >= (double) BasicCharacter.SIZE) {
                             // no collision, continue moving towards temp2
                             temp.setTarget(
-                                    opponent.getX(),
-                                    opponent.getY());
+                                    interactionCharacter.getCenterX(),
+                                    interactionCharacter.getCenterY());
                         } else {
                             // stop movement, temp is intersecting
                             temp.setTarget(tempX, tempY);
                         }
                     }
-                    // no more enemies left!
+                    // no more interaction characters left!
                     else {
                         temp.setTarget(tempX, tempY);
 

@@ -2,9 +2,11 @@ package com.martykausas.characters;
 
 import com.martykausas.interfaces.Updatable;
 import com.martykausas.interfaces.Drawable;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -25,15 +27,24 @@ public class BasicCharacter implements Updatable, Drawable {
     private final int id = currentID;
 
     public static final int
+            // teams
             RED = 0,
             BLUE = 1,
+
+            // character types
+            BASIC = 0,
+            FIGHTER = 1,
+            MEDIC = 2,
+
             SIZE = 40,
             SMALL_SIZE = (int) (SIZE * 0.6);
 
     private int
             team,
+            characterType = BASIC,
             health = 255,
-            transparency = health;
+            transparency = health,
+            interactionCircleSize = 0;
 
     private double
             outsideX = 0,
@@ -43,14 +54,19 @@ public class BasicCharacter implements Updatable, Drawable {
             setpointX = 400,
             setpointY = 500,
 
-            movementSpeed = 0.0024,
+            movementSpeed = 0.0044,
             distanceToClosestOpponent = 10000,
             distanceToInteract = 5;
+
+    private static final double
+            HALF_SIZE = SIZE / 2,
+            HALF_SMALL_SIZE = SMALL_SIZE / 2;
 
     private BasicCharacter opponent;
     private Vector2d velocityVector = new Vector2d();
     private BufferedImage bImg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
     private Image icon = bImg.getScaledInstance(1, 1, Image.SCALE_FAST);
+    private Color interactionRingColor = Color.BLACK;
 
     private int iconX, iconY;
 
@@ -59,8 +75,8 @@ public class BasicCharacter implements Updatable, Drawable {
         this.team   = team;
         outsideX    = startX;
         outsideY    = startY;
-        insideX     = outsideX + SMALL_SIZE / 2;
-        insideY     = outsideX + SMALL_SIZE / 2;
+        insideX     = outsideX + HALF_SMALL_SIZE;
+        insideY     = outsideX + HALF_SMALL_SIZE;
 
         currentID++;
     }
@@ -88,11 +104,19 @@ public class BasicCharacter implements Updatable, Drawable {
 //        System.out.println("velocity = " + "(" + velocity.x + ", " + velocity.y + ")");
         outsideX += velocityVector.x;
         outsideY += velocityVector.y;
-        insideX = (outsideX + SIZE / 2) - (SMALL_SIZE / 2);
-        insideY = (outsideY + SIZE / 2) - (SMALL_SIZE / 2);
+        insideX = (outsideX + HALF_SIZE) - HALF_SMALL_SIZE;
+        insideY = (outsideY + HALF_SIZE) - HALF_SMALL_SIZE;
 
-        iconX = (int) (getX() - icon.getWidth(null) / 2);
-        iconY = (int) (getY() - icon.getHeight(null) / 2);
+        iconX = (int) (getCenterX() - icon.getWidth(null) / 2);
+        iconY = (int) (getCenterY() - icon.getHeight(null) / 2);
+
+        if (readyToInteract()) {
+            if (interactionCircleSize < distanceToInteract) {
+                    interactionCircleSize++;
+            } else {
+                    interactionCircleSize = 0;
+            }
+        }
 
         childUpdate();
     }
@@ -103,8 +127,8 @@ public class BasicCharacter implements Updatable, Drawable {
     public void childUpdate() { /* fill in in child class */ }
 
     private Vector2d getVelocityVector() {
-        double dx = setpointX - (insideX + SMALL_SIZE / 2);
-        double dy = setpointY - (insideY + SMALL_SIZE / 2);
+        double dx = setpointX - (insideX + HALF_SMALL_SIZE);
+        double dy = setpointY - (insideY + HALF_SMALL_SIZE);
 
         return new Vector2d(dx * movementSpeed, dy * movementSpeed);
 
@@ -139,29 +163,50 @@ public class BasicCharacter implements Updatable, Drawable {
 
     @Override
     public void draw(Graphics g) {
-        transparency = health <= 0 ? 0 : health;
 
-        // outside circle
-        g.setColor(team == RED ? Color.RED : Color.BLUE);
-        switch (team) {
-            case RED:
-                g.setColor(new Color(255, 0, 0, transparency));
-                break;
-            case BLUE:
-                g.setColor(new Color(0, 0, 255, transparency));
-                break;
-            default:
-                g.setColor(Color.ORANGE);
+        try {
+            transparency = health <= 0 ? 0 : health;
+            transparency = health >= 255 ? 255 : health;
+            System.out.println("Transparency = " + transparency);
+
+            // outside circle
+            g.setColor(team == RED ? Color.RED : Color.BLUE);
+            switch (team) {
+                case RED:
+                    g.setColor(new Color(255, 0, 0, transparency));
+                    break;
+                case BLUE:
+                    g.setColor(new Color(0, 0, 255, transparency));
+                    break;
+                default:
+                    g.setColor(Color.ORANGE);
+            }
+            g.fillOval((int) outsideX, (int) outsideY, SIZE, SIZE);
+
+            // inside circle
+            g.setColor(readyToInteract() ? new Color(255, 0, 255, transparency) : new Color(0, 0, 0, transparency));
+            g.fillOval((int) insideX, (int) insideY, SMALL_SIZE, SMALL_SIZE);
+        } // end of try
+
+        catch (Exception ex) {
+            System.out.println("Stupid color error.");
         }
-        g.fillOval((int) outsideX, (int) outsideY, SIZE, SIZE);
 
-        // inside circle
-        g.setColor(readyToInteract() ? new Color(255, 0, 255, transparency) : new Color(0, 0, 0, transparency));
-        g.fillOval((int) insideX, (int) insideY, SMALL_SIZE, SMALL_SIZE);
+        // interaction ring color
+        if (readyToInteract()) {
+            Graphics2D g2D = (Graphics2D) g;
+            g2D.setStroke(new BasicStroke(2F));
+
+            g2D.setColor(interactionRingColor);
+            g2D.drawOval(
+                    (int) getCenterX() - (interactionCircleSize / 2),
+                    (int) getCenterY() - (interactionCircleSize / 2),
+                    interactionCircleSize, interactionCircleSize);
+        }
 
         // setpoint line
 //        g.setColor(Color.green);
-//        g.drawLine((int) getX(), (int) getY(), (int) setpointX, (int) setpointY);
+//        g.drawLine((int) getCenterX(), (int) getCenterY(), (int) setpointX, (int) setpointY);
 
         // if the img exists, draw it
         if (icon.getWidth(null) > 1)
@@ -169,7 +214,7 @@ public class BasicCharacter implements Updatable, Drawable {
 
 //        g.setColor(Color.WHITE);
 //        g.setFont(new Font("Helvetica", Font.BOLD, 20));
-//        g.drawString("" + id, (int) getX(), (int) getY());
+//        g.drawString("" + id, (int) getCenterX(), (int) getCenterY());
 
         childDraw(g);
     }
@@ -195,16 +240,24 @@ public class BasicCharacter implements Updatable, Drawable {
      * Returns the cartesian x-coordinate of the center of the {@code BasicCharacter}
      * @return
      */
-    public double getX() {
-        return (insideX + SMALL_SIZE / 2);
+    public double getCenterX() {
+        return (insideX + HALF_SMALL_SIZE);
     }
 
     /**
      * Returns the cartesian y-coordinate of the center of the {@code BasicCharacter}
      * @return
      */
-    public double getY() {
-        return (insideY + SMALL_SIZE / 2);
+    public double getCenterY() {
+        return (insideY + HALF_SMALL_SIZE);
+    }
+
+    public double getTopLeftX() {
+        return outsideX;
+    }
+
+    public double getTopLeftY() {
+        return outsideY;
     }
 
     /**
@@ -248,8 +301,8 @@ public class BasicCharacter implements Updatable, Drawable {
      */
     public double dist(BasicCharacter character1, BasicCharacter character2) {
         return Math.sqrt(
-                Math.pow(character1.getX() - character2.getX(), 2) +
-                Math.pow(character1.getY() - character2.getY(), 2));
+                Math.pow(character1.getCenterX() - character2.getCenterX(), 2) +
+                Math.pow(character1.getCenterY() - character2.getCenterY(), 2));
     }
 
     /**
@@ -329,13 +382,25 @@ public class BasicCharacter implements Updatable, Drawable {
      * Sets the current opponent of this {@code BasicCharacter}
      * @param opponent
      */
-    public void setOpponent(BasicCharacter opponent) {
+    public void setInteractionCharacter(BasicCharacter opponent) {
         this.opponent = opponent;
     }
 
 
-    public BasicCharacter getOpponent() {
+    public BasicCharacter getInreractionCharacter() {
         return opponent;
+    }
+
+    public void setType(int characterType) {
+        this.characterType = characterType;
+    }
+
+    public int getType() {
+        return characterType;
+    }
+
+    public void setInteractionRingColor(Color color) {
+        interactionRingColor = color;
     }
 
 }
