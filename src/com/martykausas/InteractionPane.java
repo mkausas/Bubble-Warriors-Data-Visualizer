@@ -9,6 +9,7 @@ import java.awt.event.MouseMotionListener;
 import java.io.File;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 /**
  *
@@ -20,6 +21,7 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
             titleImg,
 
             colorSelectionImg,
+            countImg,
 
             playImg,
             playImgHover;
@@ -60,6 +62,13 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
             colorSelectionX,
             colorSelectionY,
 
+            count1X,
+            count1Y,
+            count1Width,
+            count1Height,
+            countX,
+            countY,
+
             playX,
             playY,
 
@@ -72,6 +81,10 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
 
             red2, green2,
             blue2, yellow2;
+
+    private JTextField
+            team1Count,
+            team2Count;
 
     public InteractionPane() {
         setSize(Frame.screenSize);
@@ -98,6 +111,7 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
             yellow2 = new InteractiveImage("imgs/yellow.png", "imgs/yellowhover.png", "imgs/yellowselected.png");
 
             colorSelectionImg = ImageIO.read(new File("imgs/colorselection.png"));
+            countImg = ImageIO.read(new File("imgs/count.png"));
 
             playImg = ImageIO.read(new File("imgs/beginbutton.png"));
             playImgHover = ImageIO.read(new File("imgs/beginbuttonhover.png"));
@@ -119,7 +133,8 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
         int distanceFromCenter = 4 * colorSize;
         // color set 1
         redX1 = halfScreenWidth - (distanceFromCenter);
-        redY1 = halfScreenHeight;
+//        redY1 = halfScreenHeight;
+        redY1 = (int) (titleY + titleImg.getHeight(null) * 1.4);
 
         blueX1 = redX1;
         blueY1 = redY1 + colorSeperation;
@@ -142,10 +157,33 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
 
         blueX2 = redX2;
         blueY2 = redY2 + colorSeperation;
-        /** End Color Coordinates **/
 
+        // color selection divider image
         colorSelectionX = halfScreenWidth - colorSelectionImg.getWidth(null) / 2;
         colorSelectionY = redY1;
+        /** End Color Coordinates **/
+
+        /*** Start team counts ***/
+        // team 1
+        count1X = halfScreenWidth - 200;
+        count1Y = (int) (redY1 + colorSize * 2.5);
+        count1Width = 125;
+        count1Height = 75;
+        team1Count = new JTextField("30");
+        team1Count.setFont(new java.awt.Font("Herculanum", 0, 60));
+        team1Count.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        team1Count.setBounds(count1X, count1Y, count1Width, count1Height);
+        add(team1Count);
+
+        // team 2
+        team2Count = new JTextField("30");
+        team2Count.setFont(new java.awt.Font("Herculanum", 0, 60));
+        team2Count.setBounds(halfScreenWidth + 75, count1Y, count1Width, count1Height);
+        add(team2Count);
+
+        countX = halfScreenWidth - (countImg.getWidth(null) / 2);
+        countY = count1Y;
+        /*** End team counts ***/
 
         playX = halfScreenWidth - (playImg.getWidth(null) / 2);
         playY =  6 * frameHeight / 9;
@@ -172,10 +210,16 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
         g.drawImage(colorSelected2 == GREEN ? green2.get(InteractiveImage.SELECTED) : green2.get(), greenX2, greenY2, null);
         g.drawImage(colorSelected2 == YELLOW ? yellow2.get(InteractiveImage.SELECTED) : yellow2.get(), yellowX2, yellowY2, null);
 
+        // color selector
         g.drawImage(colorSelectionImg, colorSelectionX, colorSelectionY, null);
+
+        // count seperator
+        g.drawImage(countImg, countX, countY, null);
 
         // play button
         g.drawImage(playHover ? playImgHover : playImg, playX, playY, null);
+
+
 
         // for debugging
 //        g.setColor(Color.red);

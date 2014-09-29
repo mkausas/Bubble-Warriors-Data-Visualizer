@@ -3,9 +3,14 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/Users/Marty/NetBeansProjects/War%20A.I.%20Program/src/com/martykausas/Panel.java</file>
             <file>file:/Users/Marty/NetBeansProjects/War%20A.I.%20Program/src/com/martykausas/InteractionPane.java</file>
+            <file>file:/Users/Marty/NetBeansProjects/War%20A.I.%20Program/src/com/martykausas/Frame.java</file>
             <file>file:/Users/Marty/NetBeansProjects/War%20A.I.%20Program/src/com/martykausas/WarAIProgram.java</file>
-            <file>file:/Users/Marty/NetBeansProjects/War%20A.I.%20Program/src/com/martykausas/characters/Fighter.java</file>
+            <file>file:/Users/Marty/NetBeansProjects/War%20A.I.%20Program/src/com/martykausas/InteractiveImage.java</file>
+            <file>file:/Users/Marty/NetBeansProjects/War%20A.I.%20Program/src/com/martykausas/threadmanagers/AnimationManager.java</file>
+            <file>file:/Users/Marty/NetBeansProjects/War%20A.I.%20Program/src/com/martykausas/threadmanagers/InteractionManager.java</file>
+            <file>file:/Users/Marty/NetBeansProjects/War%20A.I.%20Program/src/com/martykausas/characters/BasicCharacter.java</file>
         </group>
     </open-files>
 </project-private>

@@ -48,31 +48,31 @@ public class WarAIProgram {
 
     public void initArmies() {
 
-//        for (int i = 0; i < 10; i++) {
-//            BasicCharacter c;
-//                if (i % 5 == 0) {
-//                    c = new Medic(BasicCharacter.TEAM1, Math.random() * 700 + 900, Math.random() * 700);
-//                } else {
-//                    c = new Fighter(BasicCharacter.TEAM1, Math.random() * 700 + 900, Math.random() * 700);
-//                }
-//            updatables.add(c);
-//            drawables.add(c);
-//        }
-//        for (int i = 0; i < 10; i++) {
-//            BasicCharacter c;
-//            if (i % 5 == 0) {
-//                c = new Medic(BasicCharacter.TEAM2, Math.random(), Math.random() * 700);
-//            } else {
-//                c = new Fighter(BasicCharacter.TEAM2, Math.random() * 300, Math.random() * 700);
-//            }
-//
-//            updatables.add(c);
-//            drawables.add(c);
-//        }
+        for (int i = 0; i < 10; i++) {
+            BasicCharacter c;
+                if (i % 5 == 0) {
+                    c = new Medic(BasicCharacter.TEAM1, Math.random() * 700 + 900, Math.random() * 700);
+                } else {
+                    c = new Fighter(BasicCharacter.TEAM1, Math.random() * 700 + 900, Math.random() * 700);
+                }
+            updatables.add(c);
+            drawables.add(c);
+        }
+        for (int i = 0; i < 10; i++) {
+            BasicCharacter c;
+            if (i % 5 == 0) {
+                c = new Medic(BasicCharacter.TEAM2, Math.random(), Math.random() * 700);
+            } else {
+                c = new Fighter(BasicCharacter.TEAM2, Math.random() * 300, Math.random() * 700);
+            }
 
-        CornerText t = new CornerText();
+            updatables.add(c);
+            drawables.add(c);
+        }
+
+//        CornerText t = new CornerText();
 //        updatables.add(t);
-        drawables.add(t);
+//        drawables.add(t);
 
     }
 
