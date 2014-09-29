@@ -13,6 +13,9 @@ import java.util.ArrayList;
 public class InteractionManager extends Thread {
 
     private ArrayList<Updatable> updatables;
+    private int team1Count = 0;
+    private int team2Count = 0;
+
 
     public InteractionManager() {
         updatables = WarAIProgram.getUpdatables();
@@ -28,6 +31,11 @@ public class InteractionManager extends Thread {
                         WarAIProgram.removeCharacter(temp);
                         break;
                     }
+
+                    if (temp.getTeam() == BasicCharacter.TEAM1)
+                        team1Count++;
+                    else
+                        team2Count++;
 
                     BasicCharacter temp2;
                     double tempX = temp.getCenterX();
@@ -126,10 +134,19 @@ public class InteractionManager extends Thread {
                         temp.setTarget(tempX, tempY);
 
                     }
+                    if (i == updatables.size() - 1)
+                        setTeamCounts(team1Count, team2Count);
+
                 } // end of first for()
+
+
                 Thread.sleep(20);
             } catch (Exception ex) { ex.printStackTrace(); }
         }
+    }
+
+    public void setTeamCounts(int team1, int team2) {
+
     }
 
 }

@@ -5,3 +5,24 @@ army:
 - troop type
 - save these settings
 - load a previously saved army
+
+required:
+- team color
+- team count
+- army types
+
+red 
+normal (219, 22, 55)
+hover (212, 81, 114)
+
+blue 
+normal (53, 60, 211)
+hover (46, 119, 255)
+
+green
+normal (31, 217, 74)
+hover (24, 255, 133)
+
+yellow
+normal (241, 243, 39)
+hover (234, 255, 98)

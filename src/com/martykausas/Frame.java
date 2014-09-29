@@ -21,7 +21,7 @@ public class Frame extends JFrame {
         setSize(screenSize);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setUndecorated(true);
-        setOpacity((float) 0.6);
+        setOpacity((float) 0.8);
 
         addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {

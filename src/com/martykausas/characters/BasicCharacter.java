@@ -4,10 +4,11 @@ import com.martykausas.interfaces.Updatable;
 import com.martykausas.interfaces.Drawable;
 import java.awt.BasicStroke;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -28,8 +29,8 @@ public class BasicCharacter implements Updatable, Drawable {
 
     public static final int
             // teams
-            RED = 0,
-            BLUE = 1,
+            TEAM1 = 0,
+            TEAM2 = 1,
 
             // character types
             BASIC = 0,
@@ -67,6 +68,7 @@ public class BasicCharacter implements Updatable, Drawable {
     private BufferedImage bImg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
     private Image icon = bImg.getScaledInstance(1, 1, Image.SCALE_FAST);
     private Color interactionRingColor = Color.BLACK;
+    private AffineTransform transform = new AffineTransform();
 
     private int iconX, iconY;
 
@@ -170,12 +172,12 @@ public class BasicCharacter implements Updatable, Drawable {
             System.out.println("Transparency = " + transparency);
 
             // outside circle
-            g.setColor(team == RED ? Color.RED : Color.BLUE);
+            g.setColor(team == TEAM1 ? Color.RED : Color.BLUE);
             switch (team) {
-                case RED:
+                case TEAM1:
                     g.setColor(new Color(255, 0, 0, transparency));
                     break;
-                case BLUE:
+                case TEAM2:
                     g.setColor(new Color(0, 0, 255, transparency));
                     break;
                 default:
@@ -209,9 +211,31 @@ public class BasicCharacter implements Updatable, Drawable {
 //        g.drawLine((int) getCenterX(), (int) getCenterY(), (int) setpointX, (int) setpointY);
 
         // if the img exists, draw it
-        if (icon.getWidth(null) > 1)
+        if (icon.getWidth(null) > 1) {
+
+//            AffineTransform tx = new AffineTransform();
+//
+//            // last, width = height and height = width :)
+//            tx.translate(icon.getHeight(null) / 2, icon.getWidth(null) / 2);
+//            tx.rotate(Math.PI / 2);
+//            // first - center image at the origin so rotate works OK
+//            tx.translate(-icon.getWidth(null) / 2, -icon.getHeight(null) / 2);
+//
+//            AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
+//
+//            // new destination image where height = width and width = height.
+//            BufferedImage newImage = new BufferedImage(
+//                    icon.getHeight(null),
+//                    icon.getWidth(null), BufferedImage.TYPE_INT_RGB);
+//
+//            op.filter((BufferedImage) new BufferedImage(19, 19, 19), newImage);
+//
+//            Graphics2D g2D = (Graphics2D) g;
+//            transform = g2D.getTransform();
+//            transform.rotate(interactionCircleSize);
             g.drawImage(icon, iconX, iconY, null);
 
+        }
 //        g.setColor(Color.WHITE);
 //        g.setFont(new Font("Helvetica", Font.BOLD, 20));
 //        g.drawString("" + id, (int) getCenterX(), (int) getCenterY());

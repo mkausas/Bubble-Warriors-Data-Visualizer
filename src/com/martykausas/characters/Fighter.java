@@ -12,7 +12,7 @@ import java.awt.Graphics2D;
  */
 public class Fighter extends BasicCharacter {
 
-    private int damageCoefficient = 2;
+    private int damageCoefficient = 5;
     private int interactDistance = 100;
     private int circleSize = 10;
 
