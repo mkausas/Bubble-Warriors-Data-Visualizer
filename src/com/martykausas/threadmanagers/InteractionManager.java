@@ -3,6 +3,7 @@ package com.martykausas.threadmanagers;
 import com.martykausas.WarAIProgram;
 import com.martykausas.interfaces.Updatable;
 import com.martykausas.characters.BasicCharacter;
+import com.martykausas.other.Method;
 import java.util.ArrayList;
 
 /**
@@ -67,9 +68,7 @@ public class InteractionManager extends Thread {
                             if (temp.getTeam() != temp2.getTeam() &&
                                 temp.getType() != BasicCharacter.MEDIC) {
 
-                                double dist = Math.sqrt(
-                                    Math.pow(dx, 2) +
-                                    Math.pow(dy, 2));
+                                double dist = Method.dist(dx, dy);
 
                                 if (dist < closestCharacterDistance) {
                                     closestCharacterDistance = dist;

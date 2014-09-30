@@ -15,8 +15,9 @@ public class Medic extends BasicCharacter {
     private int interactDistance = SIZE * 2;
     private int circleSize = 10;
 
-    public Medic(int team, double startX, double startY) {
+    public Medic(int team, double startX, double startY, int color) {
         super(team, startX, startY);
+        setColor(color);
         setIcon("imgs/cross.png");
         setDistanceToInteract(interactDistance);
         setType(BasicCharacter.MEDIC);
@@ -26,7 +27,7 @@ public class Medic extends BasicCharacter {
     @Override
     public void childUpdate() {
         if (readyToInteract()) {
-            BasicCharacter ally = getInreractionCharacter();
+            BasicCharacter ally = getInteractionCharacter();
             ally.increaseHealth(healthCoefficient);
         }
 

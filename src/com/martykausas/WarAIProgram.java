@@ -36,7 +36,7 @@ public class WarAIProgram {
         }
 
         // start the simulator
-        initArmies();
+        initArmies(pane.getInitInstructions());
 
         AnimationManager animationThread = new AnimationManager(frame.panel);
         InteractionManager interactionThread = new InteractionManager();
@@ -46,34 +46,40 @@ public class WarAIProgram {
 
     }
 
-    public void initArmies() {
+    public void initArmies(int[] instructions) {
+        // grab instructions provided from interaction pane
+        int colorSelected1 = instructions[0];
+        int colorSelected2 = instructions[1];
+        int armyCount1 = instructions[2];
+        int armyCount2 = instructions[3];
+        boolean fighter1Selected = instructions[4] == 0;
+        boolean fighter2Selected = instructions[5] == 0;
+        boolean medic1Selected = instructions[6] == 0;
+        boolean medic2Selected = instructions[7] == 0;
 
-        for (int i = 0; i < 10; i++) {
-            BasicCharacter c;
-                if (i % 5 == 0) {
-                    c = new Medic(BasicCharacter.TEAM1, Math.random() * 700 + 900, Math.random() * 700);
-                } else {
-                    c = new Fighter(BasicCharacter.TEAM1, Math.random() * 700 + 900, Math.random() * 700);
+        // init army 1
+        for (int i = 0; i < armyCount1; i++) {
+            BasicCharacter c = null;
+                if (medic1Selected && i % 5 == 0) {
+                    c = new Medic(BasicCharacter.TEAM1, Math.random() * 700 + 900, Math.random() * 700, colorSelected1);
+                } else if (fighter1Selected) {
+                    c = new Fighter(BasicCharacter.TEAM1, Math.random() * 700 + 900, Math.random() * 700, colorSelected1);
                 }
             updatables.add(c);
             drawables.add(c);
         }
-        for (int i = 0; i < 10; i++) {
-            BasicCharacter c;
-            if (i % 5 == 0) {
-                c = new Medic(BasicCharacter.TEAM2, Math.random(), Math.random() * 700);
-            } else {
-                c = new Fighter(BasicCharacter.TEAM2, Math.random() * 300, Math.random() * 700);
-            }
 
+        // init army2
+        for (int i = 0; i < armyCount2; i++) {
+            BasicCharacter c = null;
+                if (medic2Selected && i % 5 == 0) {
+                    c = new Medic(BasicCharacter.TEAM2, Math.random() * 300, Math.random() * 700, colorSelected2);
+                } else if (fighter2Selected) {
+                    c = new Fighter(BasicCharacter.TEAM2, Math.random() * 300, Math.random() * 700, colorSelected2);
+                }
             updatables.add(c);
             drawables.add(c);
         }
-
-//        CornerText t = new CornerText();
-//        updatables.add(t);
-//        drawables.add(t);
-
     }
 
 

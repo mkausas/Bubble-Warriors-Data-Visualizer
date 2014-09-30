@@ -26,3 +26,16 @@ hover (24, 255, 133)
 yellow
 normal (241, 243, 39)
 hover (234, 255, 98)
+
+git add -f *
+git commit -m "blah blah"
+git push -u origin master
+
+
+
+git init
+git remote add origin https://github.com/try-git/try_git.git
+git pull origin master
+git branch clean_up // make a new branch
+git checkout clean_up // switch to clean_up branch
+git checkout master // switch to master branch

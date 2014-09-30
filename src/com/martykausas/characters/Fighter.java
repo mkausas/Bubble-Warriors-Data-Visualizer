@@ -1,10 +1,7 @@
 package com.martykausas.characters;
 
-import com.martykausas.characters.BasicCharacter;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 /**
  *
@@ -13,11 +10,12 @@ import java.awt.Graphics2D;
 public class Fighter extends BasicCharacter {
 
     private int damageCoefficient = 5;
-    private int interactDistance = 100;
+    private int interactDistance = 120;
     private int circleSize = 10;
 
-    public Fighter(int type, double startX, double startY) {
+    public Fighter(int type, double startX, double startY, int color) {
         super(type, startX, startY);
+        setColor(color);
         setIcon("imgs/sword.png");
         setDistanceToInteract(interactDistance);
         setHealth(255);
@@ -28,7 +26,7 @@ public class Fighter extends BasicCharacter {
     @Override
     public void childUpdate() {
         if (readyToInteract()) {
-            BasicCharacter opponent = getInreractionCharacter();
+            BasicCharacter opponent = getInteractionCharacter();
             opponent.deductHealth(damageCoefficient);
         }
     }

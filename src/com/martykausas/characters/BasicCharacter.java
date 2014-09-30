@@ -32,16 +32,23 @@ public class BasicCharacter implements Updatable, Drawable {
             TEAM1 = 0,
             TEAM2 = 1,
 
+            RED = 0,
+            BLUE = 1,
+            GREEN = 2,
+            YELLOW = 3,
+
             // character types
             BASIC = 0,
             FIGHTER = 1,
-            MEDIC = 2,
+            MEDIC = 2;
 
+    public static int
             SIZE = 40,
             SMALL_SIZE = (int) (SIZE * 0.6);
 
     private int
             team,
+            teamColor = RED,
             characterType = BASIC,
             health = 255,
             transparency = health,
@@ -57,18 +64,19 @@ public class BasicCharacter implements Updatable, Drawable {
 
             movementSpeed = 0.0044,
             distanceToClosestOpponent = 10000,
-            distanceToInteract = 5;
+            distanceToInteract = 10;
 
-    private static final double
-            HALF_SIZE = SIZE / 2,
-            HALF_SMALL_SIZE = SMALL_SIZE / 2;
+    private static double
+            HALF_SIZE,
+            HALF_SMALL_SIZE;
 
     private BasicCharacter opponent;
     private Vector2d velocityVector = new Vector2d();
     private BufferedImage bImg = new BufferedImage(1, 1, BufferedImage.TYPE_INT_RGB);
     private Image icon = bImg.getScaledInstance(1, 1, Image.SCALE_FAST);
+    private String iconFilePath;
+
     private Color interactionRingColor = Color.BLACK;
-    private AffineTransform transform = new AffineTransform();
 
     private int iconX, iconY;
 
@@ -77,8 +85,7 @@ public class BasicCharacter implements Updatable, Drawable {
         this.team   = team;
         outsideX    = startX;
         outsideY    = startY;
-        insideX     = outsideX + HALF_SMALL_SIZE;
-        insideY     = outsideX + HALF_SMALL_SIZE;
+        setSize(SIZE);
 
         currentID++;
     }
@@ -88,9 +95,11 @@ public class BasicCharacter implements Updatable, Drawable {
      * @param filePath
      */
     public void setIcon(String filePath) {
+        iconFilePath = filePath;
+
         // icon setup
         try {
-            bImg = ImageIO.read(new File(filePath));
+            bImg = ImageIO.read(new File(iconFilePath));
             double iconWidth = BasicCharacter.SMALL_SIZE * .4;
             icon = bImg.getScaledInstance(
                     (int) iconWidth,
@@ -169,16 +178,20 @@ public class BasicCharacter implements Updatable, Drawable {
         try {
             transparency = health <= 0 ? 0 : health;
             transparency = health >= 255 ? 255 : health;
-            System.out.println("Transparency = " + transparency);
 
             // outside circle
-            g.setColor(team == TEAM1 ? Color.RED : Color.BLUE);
-            switch (team) {
-                case TEAM1:
-                    g.setColor(new Color(255, 0, 0, transparency));
+            switch (teamColor) {
+                case RED:
+                    g.setColor(new Color(219, 22, 55, transparency));
                     break;
-                case TEAM2:
-                    g.setColor(new Color(0, 0, 255, transparency));
+                case BLUE:
+                    g.setColor(new Color(53, 60, 211, transparency));
+                    break;
+                case GREEN:
+                    g.setColor(new Color(31, 217, 74, transparency));
+                    break;
+                case YELLOW:
+                    g.setColor(new Color(241, 243, 39, transparency));
                     break;
                 default:
                     g.setColor(Color.ORANGE);
@@ -186,7 +199,7 @@ public class BasicCharacter implements Updatable, Drawable {
             g.fillOval((int) outsideX, (int) outsideY, SIZE, SIZE);
 
             // inside circle
-            g.setColor(readyToInteract() ? new Color(255, 0, 255, transparency) : new Color(0, 0, 0, transparency));
+            g.setColor(/*readyToInteract() ? new Color(255, 0, 255, transparency) : */new Color(0, 0, 0, transparency));
             g.fillOval((int) insideX, (int) insideY, SMALL_SIZE, SMALL_SIZE);
         } // end of try
 
@@ -212,33 +225,9 @@ public class BasicCharacter implements Updatable, Drawable {
 
         // if the img exists, draw it
         if (icon.getWidth(null) > 1) {
-
-//            AffineTransform tx = new AffineTransform();
-//
-//            // last, width = height and height = width :)
-//            tx.translate(icon.getHeight(null) / 2, icon.getWidth(null) / 2);
-//            tx.rotate(Math.PI / 2);
-//            // first - center image at the origin so rotate works OK
-//            tx.translate(-icon.getWidth(null) / 2, -icon.getHeight(null) / 2);
-//
-//            AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_BILINEAR);
-//
-//            // new destination image where height = width and width = height.
-//            BufferedImage newImage = new BufferedImage(
-//                    icon.getHeight(null),
-//                    icon.getWidth(null), BufferedImage.TYPE_INT_RGB);
-//
-//            op.filter((BufferedImage) new BufferedImage(19, 19, 19), newImage);
-//
-//            Graphics2D g2D = (Graphics2D) g;
-//            transform = g2D.getTransform();
-//            transform.rotate(interactionCircleSize);
             g.drawImage(icon, iconX, iconY, null);
 
         }
-//        g.setColor(Color.WHITE);
-//        g.setFont(new Font("Helvetica", Font.BOLD, 20));
-//        g.drawString("" + id, (int) getCenterX(), (int) getCenterY());
 
         childDraw(g);
     }
@@ -411,7 +400,7 @@ public class BasicCharacter implements Updatable, Drawable {
     }
 
 
-    public BasicCharacter getInreractionCharacter() {
+    public BasicCharacter getInteractionCharacter() {
         return opponent;
     }
 
@@ -425,6 +414,21 @@ public class BasicCharacter implements Updatable, Drawable {
 
     public void setInteractionRingColor(Color color) {
         interactionRingColor = color;
+    }
+
+    public void setColor(int color) {
+        teamColor = color;
+    }
+
+    public void setSize(int size) {
+        this.SIZE = size;
+        SMALL_SIZE = (int) (SIZE * 0.6);
+        HALF_SIZE = SIZE / 2;
+        HALF_SMALL_SIZE = SMALL_SIZE / 2;
+        insideX = outsideX + HALF_SMALL_SIZE;
+        insideY = outsideX + HALF_SMALL_SIZE;
+        if (iconFilePath != null)
+            setIcon(iconFilePath);
     }
 
 }
