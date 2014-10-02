@@ -13,4 +13,7 @@ Cool add-on ideas:
 - have armies based on web gathered information (visualize data through the simulation)
 
 Screenshot of the work in its test stages:
-![alt tag](https://raw.githubusercontent.com/mkausas/Bubble-Ai/master/workinprogresspics/pic3.png)
+Interaction Pane
+![alt tag](https://raw.githubusercontent.com/mkausas/Bubble-Ai/master/workinprogresspics/pic4.png)
+Demo fight
+![alt tag](https://raw.githubusercontent.com/mkausas/Bubble-Ai/master/workinprogresspics/pic5.png)
