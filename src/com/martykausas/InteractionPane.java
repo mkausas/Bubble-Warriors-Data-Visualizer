@@ -1,5 +1,6 @@
 package com.martykausas;
 
+import com.martykausas.other.InteractiveImage;
 import com.martykausas.characters.BasicCharacter;
 import com.martykausas.characters.Fighter;
 import com.martykausas.characters.Medic;
@@ -45,7 +46,7 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
 
             playHover = false;
 
-    private final int
+    public static final int
             RED = 0,
             BLUE = 1,
             GREEN = 2,
@@ -126,7 +127,10 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
 
     private JTextField
             team1Count,
-            team2Count;
+            team2Count,
+
+            team1Stock,
+            team2Stock;
 
     private Fighter
             fighter1,
@@ -278,9 +282,10 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
         fighter2ShadowX = fighter2CenterX - halfCharacterSelectionSize;
         medic1ShadowX = medic1CenterX - halfCharacterSelectionSize;
         medic2ShadowX = medic2CenterX - halfCharacterSelectionSize;
-
-
         /*** End Example fighter and medic displays ***/
+
+//        /*** Stock options ***
+
 
         playX = halfScreenWidth - (playImg.getWidth(null) / 2);
         playY =  6 * frameHeight / 9;

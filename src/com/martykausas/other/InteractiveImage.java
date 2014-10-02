@@ -1,4 +1,4 @@
-package com.martykausas;
+package com.martykausas.other;
 
 import java.awt.Image;
 import java.io.File;

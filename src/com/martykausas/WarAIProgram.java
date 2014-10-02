@@ -7,7 +7,6 @@ import com.martykausas.interfaces.Updatable;
 import com.martykausas.interfaces.Drawable;
 import com.martykausas.characters.BasicCharacter;
 import com.martykausas.characters.Medic;
-import com.martykausas.prototypingclasses.CornerText;
 import java.util.ArrayList;
 
 /**
@@ -35,6 +34,8 @@ public class WarAIProgram {
             }
         }
 
+        frame.remove(pane);
+
         // start the simulator
         initArmies(pane.getInitInstructions());
 
@@ -61,9 +62,9 @@ public class WarAIProgram {
         for (int i = 0; i < armyCount1; i++) {
             BasicCharacter c = null;
                 if (medic1Selected && i % 5 == 0) {
-                    c = new Medic(BasicCharacter.TEAM1, Math.random() * 700 + 900, Math.random() * 700, colorSelected1);
+                    c = new Medic(BasicCharacter.TEAM1, Math.random() * 300, Math.random() * 700 + 70, colorSelected1);
                 } else if (fighter1Selected) {
-                    c = new Fighter(BasicCharacter.TEAM1, Math.random() * 700 + 900, Math.random() * 700, colorSelected1);
+                    c = new Fighter(BasicCharacter.TEAM1, Math.random() * 300, Math.random() * 700 + 70, colorSelected1);
                 }
             updatables.add(c);
             drawables.add(c);
@@ -73,9 +74,9 @@ public class WarAIProgram {
         for (int i = 0; i < armyCount2; i++) {
             BasicCharacter c = null;
                 if (medic2Selected && i % 5 == 0) {
-                    c = new Medic(BasicCharacter.TEAM2, Math.random() * 300, Math.random() * 700, colorSelected2);
+                    c = new Medic(BasicCharacter.TEAM2, Math.random() * 700 + 900, Math.random() * 700 + 70, colorSelected2);
                 } else if (fighter2Selected) {
-                    c = new Fighter(BasicCharacter.TEAM2, Math.random() * 300, Math.random() * 700, colorSelected2);
+                    c = new Fighter(BasicCharacter.TEAM2, Math.random() * 700 + 900, Math.random() * 700 + 70, colorSelected2);
                 }
             updatables.add(c);
             drawables.add(c);

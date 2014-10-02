@@ -4,6 +4,7 @@ import com.martykausas.WarAIProgram;
 import com.martykausas.interfaces.Updatable;
 import com.martykausas.characters.BasicCharacter;
 import com.martykausas.other.Method;
+import com.martykausas.prototypingclasses.CornerText;
 import java.util.ArrayList;
 
 /**
@@ -14,8 +15,12 @@ import java.util.ArrayList;
 public class InteractionManager extends Thread {
 
     private ArrayList<Updatable> updatables;
-    private int team1Count = 0;
-    private int team2Count = 0;
+    private int
+            team1Count = 0,
+            team2Count = 0,
+            team1Death = 0,
+            team2Death = 0;
+
 
 
     public InteractionManager() {
@@ -26,16 +31,22 @@ public class InteractionManager extends Thread {
     public void run() {
         while (true) {
             try {
+                team1Count = 0;
+                team2Count = 0;
                 for (int i = 0; i < updatables.size(); i++) {
                     BasicCharacter temp = (BasicCharacter) updatables.get(i);
                     if (temp.getHealth() <= 0) {
+                        if (temp.getTeam() == BasicCharacter.TEAM1)
+                            team1Death++;
+                        else
+                            team2Death++;
                         WarAIProgram.removeCharacter(temp);
                         break;
                     }
 
                     if (temp.getTeam() == BasicCharacter.TEAM1)
                         team1Count++;
-                    else
+                    else // check for miscalculation here
                         team2Count++;
 
                     BasicCharacter temp2;
@@ -137,6 +148,9 @@ public class InteractionManager extends Thread {
                         setTeamCounts(team1Count, team2Count);
 
                 } // end of first for()
+
+                CornerText.setTeamCounts(team1Count, team2Count);
+                CornerText.setTeamDeaths(team1Death, team2Death);
 
 
                 Thread.sleep(20);

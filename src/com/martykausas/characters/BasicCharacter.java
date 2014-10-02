@@ -1,5 +1,6 @@
 package com.martykausas.characters;
 
+import com.martykausas.Panel;
 import com.martykausas.interfaces.Updatable;
 import com.martykausas.interfaces.Drawable;
 import java.awt.BasicStroke;
@@ -7,8 +8,6 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.ImageIO;
@@ -182,16 +181,16 @@ public class BasicCharacter implements Updatable, Drawable {
             // outside circle
             switch (teamColor) {
                 case RED:
-                    g.setColor(new Color(219, 22, 55, transparency));
+                    g.setColor(new Color(Panel.rRed, Panel.gRed, Panel.bRed, transparency));
                     break;
                 case BLUE:
-                    g.setColor(new Color(53, 60, 211, transparency));
+                    g.setColor(new Color(Panel.rBlue, Panel.gBlue, Panel.bBlue, transparency));
                     break;
                 case GREEN:
-                    g.setColor(new Color(31, 217, 74, transparency));
+                    g.setColor(new Color(Panel.rGreen, Panel.gGreen, Panel.bGreen, transparency));
                     break;
                 case YELLOW:
-                    g.setColor(new Color(241, 243, 39, transparency));
+                    g.setColor(new Color(Panel.rYellow, Panel.gYellow, Panel.bYellow, transparency));
                     break;
                 default:
                     g.setColor(Color.ORANGE);

@@ -27,6 +27,9 @@ yellow
 normal (241, 243, 39)
 hover (234, 255, 98)
 
+gray 
+score (203, 214, 211)
+
 git add -f *
 git commit -m "blah blah"
 git push -u origin master
