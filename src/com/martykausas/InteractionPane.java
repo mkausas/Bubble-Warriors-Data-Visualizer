@@ -5,7 +5,6 @@ import com.martykausas.characters.BasicCharacter;
 import com.martykausas.characters.Fighter;
 import com.martykausas.characters.Medic;
 import com.martykausas.other.Method;
-import static com.martykausas.other.Method.intersects;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -32,6 +31,8 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
             colorSelectionImg,
             countImg,
 
+            stockImg,
+
             playImg,
             playImgHover;
 
@@ -43,6 +44,8 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
 
             medic1Select = false,
             medic2Select = false,
+
+            continuousHover = false,
 
             playHover = false;
 
@@ -109,6 +112,16 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
             medic1CenterY,
             medic2CenterY,
 
+            stock1X,
+            stock1Y,
+            stock1Width,
+            stock1Height,
+            stockX,
+            stockY,
+
+            continuousX,
+            continuousY,
+
             playX,
             playY,
 
@@ -123,7 +136,9 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
             blue1, yellow1,
 
             red2, green2,
-            blue2, yellow2;
+            blue2, yellow2,
+
+            continuous;
 
     private JTextField
             team1Count,
@@ -139,6 +154,8 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
     private Medic
             medic1,
             medic2;
+
+    private Font herc = new Font("Herculanum", 0, 60);
 
     public InteractionPane() {
         setSize(Frame.screenSize);
@@ -166,6 +183,10 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
             colorSelectionImg = ImageIO.read(new File("imgs/colorselection.png"));
             countImg = ImageIO.read(new File("imgs/count.png"));
 
+            stockImg = ImageIO.read(new File("imgs/stock.png"));
+
+            continuous = new InteractiveImage("imgs/continuous.png", "imgs/continuoushover.png", "imgs/continuousselected.png");
+
             playImg = ImageIO.read(new File("imgs/beginbutton.png"));
             playImgHover = ImageIO.read(new File("imgs/beginbuttonhover.png"));
 
@@ -178,7 +199,7 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
         int halfScreenHeight = frameHeight / 2;
 
         titleX = halfScreenWidth - (titleImg.getWidth(null) / 2);
-        titleY = frameHeight / 9;
+        titleY = frameHeight / 20;
 
         /*** Color Coordinates ***/
         int colorSize = red1.get().getWidth(null);
@@ -223,14 +244,14 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
         count1Width = 125;
         count1Height = 75;
         team1Count = new JTextField("30");
-        team1Count.setFont(new java.awt.Font("Herculanum", 0, 60));
+        team1Count.setFont(herc);
         team1Count.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
         team1Count.setBounds(count1X, count1Y, count1Width, count1Height);
         add(team1Count);
 
         // team 2
         team2Count = new JTextField("30");
-        team2Count.setFont(new Font("Herculanum", 0, 60));
+        team2Count.setFont(herc);
         team2Count.setBounds(halfScreenWidth + 75, count1Y, count1Width, count1Height);
         add(team2Count);
 
@@ -284,11 +305,38 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
         medic2ShadowX = medic2CenterX - halfCharacterSelectionSize;
         /*** End Example fighter and medic displays ***/
 
-//        /*** Stock options ***
+        /*** Stock options ***/
+        // team 1
+        stock1Width = 200;
+        stock1Height = 75;
+        stock1X = (int) (halfScreenWidth - stock1Width * 1.4);
+        stock1Y = (int) (fighter1CenterY + 65);
+        team1Stock = new JTextField("");
+        team1Stock.setFont(new Font("Times", Font.BOLD, 50));
+        team1Stock.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
+        team1Stock.setBounds(stock1X, stock1Y, stock1Width, stock1Height);
+        add(team1Stock);
+
+        // team 2
+        team2Stock = new JTextField("");
+        team2Stock.setFont(new Font("Times", Font.BOLD, 50));
+        team2Stock.setBounds((int) (halfScreenWidth + stock1Width * .4), stock1Y, stock1Width, stock1Height);
+        add(team2Stock);
+
+        stockX = halfScreenWidth - (stockImg.getWidth(null) / 2);
+        stockY = stock1Y;
+        /*** End Stock options ***/
+
+        /*** Continuous ***/
+        continuousX = halfScreenWidth - continuous.get().getWidth(null) / 2;
+        continuousY = stockY + continuous.get().getHeight(null) + 20;
+        /*** End Continuous ***/
+
+
 
 
         playX = halfScreenWidth - (playImg.getWidth(null) / 2);
-        playY =  6 * frameHeight / 9;
+        playY =  continuousY + continuous.get().getHeight(null) + 20;
     }
 
 
@@ -336,7 +384,6 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
             g2d.fillOval(fighter2ShadowX, shadowY - 1, characterSelectionSize, characterSelectionSize);
         }
 
-
         fighter1.draw(g2d);
         fighter1.setColor(colorSelected1);
 
@@ -348,6 +395,11 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
 
         medic2.draw(g2d);
         medic2.setColor(colorSelected2);
+
+        g.drawImage(stockImg, stockX, stockY, null);
+
+        g2d.drawImage(continuous.get(), continuousX, continuousY, null);
+
 
         // play button
         g2d.drawImage(playHover ? playImgHover : playImg, playX, playY, null);
@@ -415,6 +467,11 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
         if (Method.contains(x, y, fighter2CenterX, fighter2CenterY, halfCharacterSize)) {
             fighter2Select = !fighter2Select;
         }
+        if (Method.intersects(x, y, continuousX, continuousY, continuous.get()))
+                continuous.setState(
+                        continuous.getState() == InteractiveImage.SELECTED ?
+                                InteractiveImage.NORMAL : InteractiveImage.SELECTED);
+
     }
 
     @Override
@@ -466,6 +523,13 @@ public class InteractionPane extends JPanel implements MouseListener, MouseMotio
             yellow2.setState(InteractiveImage.HOVER);
         else
             yellow2.setState(InteractiveImage.NORMAL);
+
+        if (Method.intersects(x, y, continuousX, continuousY, continuous.get())
+                && continuous.getState() != InteractiveImage.SELECTED)
+                continuous.setState(InteractiveImage.HOVER);
+//        else
+//            continuous.setState(InteractiveImage.NORMAL);
+
     }
 
     public int[] getInitInstructions() {

@@ -1,9 +1,7 @@
 package com.martykausas.characters;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 
 /**
  *
@@ -11,7 +9,7 @@ import java.awt.Graphics2D;
  */
 public class Medic extends BasicCharacter {
 
-    private int healthCoefficient = 1;
+    private final int healthCoefficient = 1;
     private int interactDistance = SIZE * 2;
     private int circleSize = 10;
 

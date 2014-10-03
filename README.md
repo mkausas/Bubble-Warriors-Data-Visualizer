@@ -1,4 +1,4 @@
-Bubble-Ai
+Bubble Warriors Data Simulator
 =========
 Goals:
 - create a simulated war environment using small bubble AI
@@ -16,4 +16,4 @@ Screenshot of the work in its test stages:
 Interaction Pane
 ![alt tag](https://raw.githubusercontent.com/mkausas/Bubble-Ai/master/workinprogresspics/pic4.png)
 Demo fight
-![alt tag](https://raw.githubusercontent.com/mkausas/Bubble-Ai/master/workinprogresspics/pic5.png)
+![alt tag](https://raw.githubusercontent.com/mkausas/Bubble-Ai/master/workinprogresspics/pic6.png)

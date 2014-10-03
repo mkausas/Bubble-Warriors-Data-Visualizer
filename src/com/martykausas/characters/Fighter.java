@@ -9,15 +9,14 @@ import java.awt.Graphics;
  */
 public class Fighter extends BasicCharacter {
 
-    private int damageCoefficient = 5;
-    private int interactDistance = 120;
-    private int circleSize = 10;
+    private final int damageCoefficient = 5;
+//    private int interactDistance = 120;
 
     public Fighter(int type, double startX, double startY, int color) {
         super(type, startX, startY);
         setColor(color);
         setIcon("imgs/sword.png");
-        setDistanceToInteract(interactDistance);
+        setDistanceToInteract(super.SIZE * 3);
         setHealth(255);
         setType(BasicCharacter.FIGHTER);
         setInteractionRingColor(Color.RED);
@@ -33,6 +32,10 @@ public class Fighter extends BasicCharacter {
 
     @Override
     public void childDraw(Graphics g) {
+        if (readyToInteract()) {
+            g.setColor(Color.green);
+            g.drawLine((int) getCenterX(), (int) getCenterY(), (int) getSetpointX(), (int) getSetpointY());
+        }
     }
 
 
